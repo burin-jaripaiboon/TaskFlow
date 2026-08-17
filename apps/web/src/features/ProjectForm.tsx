@@ -1,0 +1,93 @@
+import { useState } from 'react';
+import type { ChangeEvent, SubmitEvent } from 'react';
+import api from '../services/api';
+
+interface ProjectFormProps {
+  onProjectCreated: () => void;
+}
+
+export default function ProjectForm({ onProjectCreated }: ProjectFormProps) {
+  const [formData, setFormData] = useState({
+    title: '',
+    description: ''
+  });
+  const [error, setError] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError('');
+    setIsLoading(true);
+
+    try {
+      // Send the data to your POST /api/projects route
+      await api.post('/projects', formData);
+      
+      // Clear the form
+      setFormData({ title: '', description: '' });
+      
+      // Tell the parent component to re-fetch the list
+      onProjectCreated();
+      
+    } catch (err: any) {
+      console.error("Error creating project:", err);
+      setError(err.response?.data?.message || 'Failed to create project');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div style={{ padding: '15px', border: '1px solid #ddd', borderRadius: '5px', marginBottom: '20px', backgroundColor: '#f9f9f9' }}>
+      <h3 style={{ marginTop: 0 }}>Create New Project</h3>
+      
+      {error && <p style={{ color: 'red', fontSize: '14px' }}>{error}</p>}
+
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        <div>
+          <label style={{ display: 'block', fontSize: '14px', marginBottom: '5px' }}>Project Title *</label>
+          <input 
+            type="text" 
+            name="title" 
+            value={formData.title} 
+            onChange={handleChange} 
+            required 
+            style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}
+          />
+        </div>
+
+        <div>
+          <label style={{ display: 'block', fontSize: '14px', marginBottom: '5px' }}>Description</label>
+          <textarea 
+            name="description" 
+            value={formData.description} 
+            onChange={handleChange} 
+            style={{ width: '100%', padding: '8px', boxSizing: 'border-box', minHeight: '60px' }}
+          />
+        </div>
+
+        <button 
+          type="submit" 
+          disabled={isLoading}
+          style={{ 
+            padding: '10px', 
+            backgroundColor: isLoading ? '#ccc' : '#0066cc', 
+            color: 'white', 
+            border: 'none', 
+            borderRadius: '3px',
+            cursor: isLoading ? 'not-allowed' : 'pointer'
+          }}
+        >
+          {isLoading ? 'Creating...' : 'Create Project'}
+        </button>
+      </form>
+    </div>
+  );
+}

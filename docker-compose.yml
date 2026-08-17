@@ -1,0 +1,12 @@
+services:
+  database:
+    image: mongo:latest # Or postgres:15
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: taskflow
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:

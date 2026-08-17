@@ -1,0 +1,13 @@
+# Node modules
+node_modules/
+apps/api/node_modules/
+apps/web/node_modules/
+
+# Environment variables
+.env
+apps/api/.env
+apps/web/.env
+
+# Build outputs
+dist/
+build/
