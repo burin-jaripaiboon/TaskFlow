@@ -11,7 +11,7 @@ const taskSchema = new Schema({
   },
   status: { 
     type: String, 
-    enum: ['TODO', 'IN_PROGRESS', 'DONE'], // Restricts the allowed values
+    enum: ['TODO', 'IN_PROGRESS', 'DONE'],
     default: 'TODO' 
   },
   projectId: { 
@@ -19,16 +19,13 @@ const taskSchema = new Schema({
     ref: 'Project', 
     required: true 
   },
-  assignedBy: { 
-    type: Schema.Types.ObjectId, 
-    ref: 'User',
-    required: true 
-  },
   assignedTo: { 
     type: Schema.Types.ObjectId, 
     ref: 'User',
-    default: null // Optional assignment
+    default: null
   }
 }, { timestamps: true });
+
+taskSchema.index({ projectId: 1 });
 
 module.exports = mongoose.model('Task', taskSchema);

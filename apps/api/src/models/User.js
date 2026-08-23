@@ -15,12 +15,12 @@ const userSchema = new Schema({
   email: { 
     type: String, 
     required: true, 
-    unique: true // Ensures no two users have the same email
+    unique: true
   },
   password_hash: { 
     type: String, 
     required: true 
   }
-}, { timestamps: true }); // Automatically adds createdAt and updatedAt
+}, { timestamps: true });
 
 module.exports = mongoose.model('User', userSchema);

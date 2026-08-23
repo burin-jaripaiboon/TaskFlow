@@ -41,11 +41,9 @@ exports.register = async (request, response) => {
       password_hash
     });
 
-    // 6. Automatically log them in by generating a JWT
     const payload = { userId: user._id };
     const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1d' });
 
-    // 201 means "Created successfully"
     response.status(201).json({ success: true, token });
     
   } catch (error) {

@@ -1,4 +1,5 @@
 const Project = require('../models/Project');
+const Task = require('../models/Task');
 
 // GET /api/projects
 exports.getProjects = async (request, response) => {
@@ -32,6 +33,55 @@ exports.createProject = async (request, response) => {
     response.status(201).json({ success: true, data: project });
   } catch (error) {
     console.error("Error creating project:", error);
+    response.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
+// PUT /api/projects/:id
+exports.updateProject = async (request, response) => {
+  try {
+    const { id } = request.params;
+    const { title, description } = request.body;
+    const ownerId = request.user;
+
+    const project = await Project.findOneAndUpdate(
+      { _id: id, ownerId: ownerId }, 
+      { title, description },
+      { new: true, runValidators: true }
+    );
+
+    if (!project) {
+      return response.status(404).json({ success: false, message: "Project not found or unauthorized access." });
+    }
+
+    response.status(200).json({ success: true, data: project });
+  } catch (error) {
+    console.error("Error updating project:", error);
+    response.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
+// DELETE /api/projects/:id
+exports.deleteProject = async (request, response) => {
+  try {
+    const { id } = request.params;
+    const ownerId = request.user;
+
+    const project = await Project.findOneAndDelete({ _id: id, ownerId: ownerId });
+
+    if (!project) {
+      return response.status(404).json({ success: false, message: "Project not found or unauthorized access." });
+    }
+
+    const deletedTasks = await Task.deleteMany({ projectId: id });
+
+    response.status(200).json({ 
+      success: true, 
+      message: "Project and related tasks successfully deleted.",
+      tasksDeleted: deletedTasks.deletedCount
+    });
+  } catch (error) {
+    console.error("Error deleting project:", error);
     response.status(500).json({ success: false, message: "Server Error" });
   }
 };
