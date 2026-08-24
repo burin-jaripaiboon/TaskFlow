@@ -89,7 +89,7 @@ exports.deleteTask = async (request, response) => {
     }
 
     await task.deleteOne();
-    return task;
+    response.status(200).json({ success: true, message: "Task successfully deleted." });
 
   } catch (error) {
     console.error("Error deleting task:", error);
