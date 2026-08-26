@@ -1,7 +1,7 @@
 This project is created for the purpose of my learning
 on how to create a functional web application with best-practices and to be used as a personal project management in the future.
 
-### Here are the things I've learned on a basic level
+### Here are the things I've learned while making this project
 - Setting up Local MongoDB via Docker and Cloud database using Atlas.
 - Designing database relations for the application.
 - Javascript is used to create APIs those connect to database in the backend.
