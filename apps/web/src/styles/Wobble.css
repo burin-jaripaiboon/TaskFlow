@@ -1,0 +1,20 @@
+.wobble {
+  font-size: 100%;
+}
+
+@keyframes wobb {
+  0%, 50%, 100%   {
+    transform: translateY(0em);
+    animation-timing-function: ease-out;
+    }
+  25%  {transform: translateY(-0.1em); animation-timing-function: ease-in;}
+  75%  {transform: translateY(0.1em); animation-timing-function: ease-in;}
+}
+
+.wobble span {
+    display: inline-block;
+  animation-name: wobb;
+  animation-iteration-count: infinite;
+  animation-duration: 2s;
+  transform: translateY(0px);
+}

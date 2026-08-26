@@ -1,70 +1,54 @@
 import { useState } from 'react';
-import { BrowserRouter, Routes, Route, Link, Navigate } from 'react-router-dom';
-import AuthForm from './features/AuthForm';
-import TaskBoard from './features/TaskBoard';
-import ProjectBoard from './features/ProjectBoard';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import TaskBoard from './pages/TaskBoard';
+import ProjectBoard from './pages/ProjectBoard';
+import WelcomePage from './pages/WelcomePage';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import ApplicationLayout from './components/ApplicationLayout';
+import DashBoard from './pages/Dashboard';
+import ProtectedRoute from './components/ProtectedRoute';
 
 export default function App() {
-  // Check if a token exists in browser memory, explicitly typed as a boolean
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(!!localStorage.getItem('token'));
-
-  // A simple logout function for testing
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    setIsLoggedIn(false);
-  };
-  if (!isLoggedIn) {
-    return <AuthForm />;
-  }
-
 
   return (
     <BrowserRouter>
-      <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '0px', fontFamily: 'sans-serif' }}>
-        
-        {/* The Navigation Bar */}
-        <header style={{ 
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between', 
-          alignItems: 'center', 
-          borderBottom: '1px solid #eee', 
-          paddingBottom: '10px' 
-        }}>
-          <h1 style={{ margin: 30 }}>TaskFlow</h1>
-          
-          <nav style={{ display: 'flex', flexDirection: 'row', gap: '20px', alignItems: 'center' }}>
-            <Link to="/" style={{ textDecoration: 'none', color: '#0066cc', fontWeight: 'bold' }}>Dashboard</Link>
-            <Link to="/projects" style={{ textDecoration: 'none', color: '#333' }}>Projects</Link>
-            <Link to="/tasks" style={{ textDecoration: 'none', color: '#333' }}>Tasks</Link>
-            
-            <button onClick={handleLogout} style={{ padding: '5px 10px', cursor: 'pointer', marginLeft: '10px' }}>
-              Log Out
-            </button>
-          </nav>
-        </header>
-
-        {/* The Dynamic Content Area */}
-        <main style={{ marginTop: '20px' }}>
+      <div>
+        <main>
           <Routes>
             
-            {/* Route 1: The Side-by-Side Dashboard */}
-            <Route path="/" element={
-              <div style={{ display: 'flex', gap: '20px' }}>
-                <div style={{ flex: 1 }}><ProjectBoard /></div>
-                <div style={{ flex: 1 }}><TaskBoard /></div>
-              </div>
+            {/* Public Routes */}
+            <Route path="/" element={<WelcomePage />} />
+            
+            {/* Auth Routes */}
+            <Route path="/login" element={
+              !isLoggedIn ? <LoginPage setIsLoggedIn={setIsLoggedIn} /> : <Navigate to="/dashboard" />
             } />
             
-            {/* Route 2: Dedicated Projects Page */}
-            <Route path="/projects" element={<ProjectBoard />} />
-            
-            {/* Route 3: Dedicated Tasks Page */}
-            <Route path="/tasks" element={<TaskBoard />} />
-            
-            {/* Catch-all: If user types a random URL, redirect to Dashboard */}
-            <Route path="*" element={<Navigate to="/" />} />
-            
+            <Route path="/register" element={
+              !isLoggedIn ? <RegisterPage setIsLoggedIn={setIsLoggedIn} /> : <Navigate to="/dashboard" />
+            } />
+
+            {/* Protected Routes */}
+            <Route element={<ProtectedRoute isLoggedIn={isLoggedIn} />}>
+              <Route element={<ApplicationLayout setIsLoggedIn={setIsLoggedIn} />}>
+                <Route path="/dashboard" element={
+                  <DashBoard />
+                } />
+
+                <Route path="/projects" element={
+                  <ProjectBoard />
+                } />
+                
+                <Route path="/tasks" element={
+                  <TaskBoard />
+                } />
+                
+                {/* Catch-all */}
+                <Route path="*" element={<Navigate to={isLoggedIn ? "/dashboard" : "/"} />} />
+              </Route>
+            </Route>
           </Routes>
         </main>
         

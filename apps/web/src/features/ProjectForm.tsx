@@ -27,13 +27,10 @@ export default function ProjectForm({ onProjectCreated }: ProjectFormProps) {
     setIsLoading(true);
 
     try {
-      // Send the data to your POST /api/projects route
       await api.post('/projects', formData);
       
-      // Clear the form
       setFormData({ title: '', description: '' });
       
-      // Tell the parent component to re-fetch the list
       onProjectCreated();
       
     } catch (err: any) {

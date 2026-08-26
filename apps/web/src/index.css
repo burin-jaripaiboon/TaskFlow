@@ -51,7 +51,6 @@
 }
 
 #root {
-  width: 1126px;
   max-width: 100%;
   margin: 0 auto;
   text-align: center;
@@ -68,6 +67,7 @@ body {
 
 h1,
 h2 {
+  padding: 0 0.2em;
   font-family: var(--heading);
   font-weight: 500;
   color: var(--text-h);
@@ -77,22 +77,20 @@ h1 {
   font-size: 56px;
   letter-spacing: -1.68px;
   margin: 32px 0px;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
+  
+  line-height: 118%;
 }
+
 h2 {
   font-size: 24px;
   line-height: 118%;
   letter-spacing: -0.24px;
   margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
 }
 p {
+  color: var(--text);
   margin: 0;
+  padding: 0 0.2em;
 }
 
 code,
@@ -110,3 +108,24 @@ code {
   background: var(--code-bg);
 }
 
+button {
+  font-size: 20px;
+  padding: 0.7em 1.5em;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  border-radius: 20px;
+  background-color: rgb(27, 35, 141);
+}
+
+.link-color {
+  color: #0066cc;
+}
+
+.auth-container {
+  margin-top: 2vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}

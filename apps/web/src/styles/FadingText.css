@@ -1,0 +1,24 @@
+.animate-fading-text {
+  --fading-text-color: white;
+  --fading-text-gradient1: var(--fading-text-color);
+  --fading-text-gradient2: var(--fading-text-color);
+  background: linear-gradient(45deg, transparent, transparent, var(--fading-text-gradient1), var(--fading-text-gradient2), transparent, transparent);
+  background-size: 400% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  background-position: 50% 50%;
+  color: transparent;
+  animation: gradient-sweep 1s linear 1;
+  padding: 0.5em;
+  margin: 0;
+}
+
+
+@keyframes gradient-sweep {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 50% 50%;
+  }
+}

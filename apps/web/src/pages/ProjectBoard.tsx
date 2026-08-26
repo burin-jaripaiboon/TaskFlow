@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import api from '../services/api';
-import ProjectForm from './ProjectForm';
+import ProjectForm from '../features/ProjectForm';
 
 
 interface Project {
@@ -40,8 +40,8 @@ export default function ProjectBoard() {
   }, []);
   
   const handleProjectCreated = () => {
-    setShowForm(false); // Hide the form
-    fetchProjects();    // Re-fetch the list from the database
+    setShowForm(false);
+    fetchProjects();
   };
 
   if (loading && projects.length === 0) {

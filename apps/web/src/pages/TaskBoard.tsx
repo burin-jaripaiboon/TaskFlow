@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import api from '../services/api';
-import TaskForm from './TaskForm';
+import TaskForm from '../features/TaskForm';
 
 
 interface Task {

@@ -31,7 +31,6 @@ export default function TaskForm({ onTaskCreated }: TaskFormProps) {
       
       if (Array.isArray(projectArray)) {
         setProjects(projectArray);
-        // Auto-select the first project in the list if available
         if (projectArray.length > 0) {
           setFormData(prev => ({ ...prev, projectId: projectArray[0]._id }));
         }
@@ -60,13 +59,10 @@ export default function TaskForm({ onTaskCreated }: TaskFormProps) {
     setIsLoading(true);
 
     try {
-      // Send the data to your POST /api/tasks route
       await api.post('/tasks', formData);
       
-      // Clear the form
       setFormData(prev => ({ ...prev, title: '', status: 'TODO' }));
       
-      // Tell the parent component to re-fetch the list
       onTaskCreated();
       
     } catch (err: any) {
