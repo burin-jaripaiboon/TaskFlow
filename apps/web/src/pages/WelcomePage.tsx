@@ -8,11 +8,6 @@ export default function WelcomePage() {
   return (
     <div className={styles.container}>
       <SequentialAnimation>
-        <h2 className={styles.subtitle}>
-          Welcome to
-        </h2>
-      </SequentialAnimation>
-      <SequentialAnimation delay={1}>
         <h1 className={`${styles.title}`}
             style={{
                     color: 'rgb(18, 28, 172)', 
@@ -26,13 +21,13 @@ export default function WelcomePage() {
                     </WobbleText>
         </h1>
       </SequentialAnimation>
-      <SequentialAnimation delay={2}>
+      <SequentialAnimation delay={1}>
         <p className={`animate-fading-text ${styles.normalText}`} 
             style={{ fontSize: '18px', marginTop: '0em' , animationDelay: '2.5s', '--fading-text-color': '#292828'} as React.CSSProperties}>
           A simplified task management solution.
         </p>
       </SequentialAnimation>
-      <SequentialAnimation delay={3}>
+      <SequentialAnimation delay={2}>
         <Link className='link-color' to="/login">Login</Link>
         <Link className='link-color' to="/register">Register</Link>
       </SequentialAnimation>
