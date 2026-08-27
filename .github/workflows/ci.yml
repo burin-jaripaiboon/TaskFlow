@@ -1,5 +1,7 @@
 name: TaskFlow CI
 
+runs:
+  using: 'node24'
 # When
 on:
   push:
