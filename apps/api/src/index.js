@@ -3,9 +3,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
-// Config
-const connectDB = require('./config/databaseConfig');
-
 // Routes
 const taskRoutes = require('./routes/taskRoutes');
 const authRoutes = require('./routes/authRoutes');
@@ -13,7 +10,7 @@ const projectRoutes = require('./routes/projectRoutes');
 
 const app = express();
 
-connectDB();
+
 
 // Middleware
 app.use(express.json());
@@ -43,9 +40,18 @@ app.use('/api/projects', projectRoutes);
 const PORT = process.env.PORT || 5000;
 
 if (process.env.NODE_ENV !== 'test') {
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-  });
+  const connectDB = require('./config/databaseConfig');
+  
+  connectDB()
+    .then(() => {
+      app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+      });
+    })
+    .catch((err) => {
+      console.error("Failed to connect to the database. Server crashed.", err);
+      process.exit(1);
+    });
 }
 
 module.exports = app;

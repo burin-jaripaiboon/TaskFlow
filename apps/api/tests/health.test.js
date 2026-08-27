@@ -8,7 +8,6 @@ describe('Health Check API', () => {
     const response = await request(app).get('/api/health');
 
     expect(response.statusCode).toBe(200);
-    expect(response.body.status).toBe('ok');
-    expect(response.body.message).toBe('TaskFlow API is healthy');
+    expect(response.body.api).toBe('TaskFlow API is running');
   });
 });

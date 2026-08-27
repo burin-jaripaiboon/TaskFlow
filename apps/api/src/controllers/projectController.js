@@ -36,7 +36,7 @@ exports.getProjectById = async (request, response) => {
 // POST /api/projects
 exports.createProject = async (request, response) => {
   try {
-    const { title, description } = request.body;
+    const { title, description, isPublicAccess } = request.body;
     const ownerId = request.user;
 
     if (!title) {
@@ -46,7 +46,8 @@ exports.createProject = async (request, response) => {
     const project = await Project.create({
       title,
       description,
-      ownerId
+      ownerId,
+      isPublicAccess
     });
 
     response.status(201).json({ success: true, data: project });
@@ -60,12 +61,12 @@ exports.createProject = async (request, response) => {
 exports.updateProject = async (request, response) => {
   try {
     const projectId = request.params.id;
-    const { title, description } = request.body;
+    const { title, description, isPublicAccess } = request.body;
     const ownerId = request.user;
 
     const project = await Project.findOneAndUpdate(
       { _id: projectId, ownerId: ownerId }, 
-      { title, description },
+      { title, description, isPublicAccess },
       { new: true, runValidators: true }
     );
 

@@ -25,6 +25,7 @@ exports.updateTask = async (taskId, userId, updateData) => {
     if (updateData.title) task.title = updateData.title;
     if (updateData.description) task.description = updateData.description;
     if (updateData.status) task.status = updateData.status;
+    if (updateData.priority) task.priority = updateData.priority;
     if (updateData.assignedTo !== undefined) task.assignedTo = updateData.assignedTo;
 
   } else if (isAssignee) {

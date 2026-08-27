@@ -21,7 +21,7 @@ exports.getTasks = async (request, response) => {
 // POST /api/tasks
 exports.createTask = async (request, response) => {
   try {
-    const { title, description, projectId, assignedName } = request.body;
+    const { title, description, priority, projectId, assignedName } = request.body;
     const assignedTo = assignedName ? await User.findOne({ name: assignedName }) : null;
 
     if (!title || !projectId) {
@@ -35,6 +35,7 @@ exports.createTask = async (request, response) => {
     const task = await Task.create({
       title,
       description,
+      priority,
       projectId,
       assignedTo
     });
