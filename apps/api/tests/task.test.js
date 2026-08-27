@@ -57,8 +57,8 @@ describe('POST /api/tasks', () => {
       .send(taskData);
 
     expect(response.statusCode).toBe(201);
-    expect(response.body.title).toBe('Write automated tests');
-    expect(response.body.status).toBe('TODO');
+    expect(response.body.data.title).toBe('Write automated tests');
+    expect(response.body.data.status).toBe('TODO');
     
     expect(response.body._id).toBeDefined();
   });
