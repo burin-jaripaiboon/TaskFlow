@@ -40,8 +40,7 @@ describe('POST /api/tasks', () => {
 
     testProject = await Project.create({
       title: 'Test Project',
-      user: user._id,
-      isPublicAccess: true
+      ownerId: user._id,
     });
   });
 
@@ -49,8 +48,7 @@ describe('POST /api/tasks', () => {
     const taskData = {
       title: 'Write automated tests',
       projectId: testProject._id,
-      status: 'TODO',
-      priority: 0
+      status: 'TODO'
     };
 
     const response = await request(app)
