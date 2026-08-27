@@ -9,6 +9,7 @@ router.route('/')
   .post(protect, createProject);
 
 router.route('/:id')
+  .get(protect, getProjectById)
   .put(protect, updateProject)
   .delete(protect, deleteProject);
 

@@ -50,18 +50,14 @@ exports.createTask = async (request, response) => {
 exports.updateTask = async (request, response) => {
   try {
     const taskId = request.params.id;
-    const userId = request.user; // Assuming your auth middleware puts the ID here
+    const userId = request.user;
     const updateData = request.body;
 
-    // Hand the raw data off to the brain!
     const updatedTask = await taskService.updateTask(taskId, userId, updateData);
 
-    // If the service succeeds, send the success response
     response.status(200).json({ success: true, data: updatedTask });
 
   } catch (error) {
-    // If the service throws our AppError, use its status code (403, 404, etc.)
-    // Otherwise, default to a 500 Server Error
     const statusCode = error.statusCode || 500;
     response.status(statusCode).json({ 
       success: false, 
@@ -70,10 +66,10 @@ exports.updateTask = async (request, response) => {
   }
 };
 
+// DELETE /api/tasks/:id
 exports.deleteTask = async (request, response) => {
   try {
-    const { id } = request.params;
-    const { projectId } = request.body;
+    const taskId = request.params.id;
     const userId = request.user;
 
     const task = await Task.findById(taskId).populate('projectId');

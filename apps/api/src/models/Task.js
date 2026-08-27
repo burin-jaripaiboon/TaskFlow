@@ -14,6 +14,14 @@ const taskSchema = new Schema({
     enum: ['TODO', 'IN_PROGRESS', 'DONE'],
     default: 'TODO' 
   },
+  priority: {
+    type: Number,
+    default: 0,
+    validate: {
+      validator: Number.isInteger,
+      message: '{VALUE} is not an integer value'
+    }
+  },
   projectId: { 
     type: Schema.Types.ObjectId, 
     ref: 'Project', 

@@ -1,5 +1,6 @@
 const Project = require('../models/Project');
 const Task = require('../models/Task');
+const projectService = require('../services/projectService');
 
 // GET /api/projects
 exports.getProjects = async (request, response) => {
@@ -11,6 +12,24 @@ exports.getProjects = async (request, response) => {
   } catch (error) {
     console.error("Error fetching projects:", error);
     response.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
+// GET /api/projects/:id
+exports.getProjectById = async (request, response) => {
+  try {
+    const projectId = request.params.id;
+    const userId = request.user;
+
+    const project = await projectService.getProjectById(projectId, userId);
+
+    response.status(200).json({ success: true, data: project });
+  } catch (error) {
+    const statusCode = error.statusCode || 500;
+    response.status(statusCode).json({ 
+      success: false, 
+      message: error.message || "Server Error" 
+    });
   }
 };
 
@@ -40,12 +59,12 @@ exports.createProject = async (request, response) => {
 // PUT /api/projects/:id
 exports.updateProject = async (request, response) => {
   try {
-    const { id } = request.params;
+    const projectId = request.params.id;
     const { title, description } = request.body;
     const ownerId = request.user;
 
     const project = await Project.findOneAndUpdate(
-      { _id: id, ownerId: ownerId }, 
+      { _id: projectId, ownerId: ownerId }, 
       { title, description },
       { new: true, runValidators: true }
     );
@@ -64,16 +83,16 @@ exports.updateProject = async (request, response) => {
 // DELETE /api/projects/:id
 exports.deleteProject = async (request, response) => {
   try {
-    const { id } = request.params;
+    const projectId = request.params.id;
     const ownerId = request.user;
 
-    const project = await Project.findOneAndDelete({ _id: id, ownerId: ownerId });
+    const project = await Project.findOneAndDelete({ _id: projectId, ownerId: ownerId });
 
     if (!project) {
       return response.status(404).json({ success: false, message: "Project not found or unauthorized access." });
     }
 
-    const deletedTasks = await Task.deleteMany({ projectId: id });
+    const deletedTasks = await Task.deleteMany({ projectId: projectId });
 
     response.status(200).json({ 
       success: true, 

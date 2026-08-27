@@ -13,6 +13,11 @@ const projectSchema = new Schema({
     type: Schema.Types.ObjectId, // This is MongoDB's version of a UUID
     ref: 'User',                 // This tells Mongoose which collection this ID belongs to
     required: true 
+  },
+  isPublicAccess: {
+    type: Boolean,
+    required: true,
+    default: false
   }
 }, { timestamps: true });
 
