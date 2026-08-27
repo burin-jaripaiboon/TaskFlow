@@ -60,7 +60,7 @@ describe('POST /api/tasks', () => {
     expect(response.body.data.title).toBe('Write automated tests');
     expect(response.body.data.status).toBe('TODO');
     
-    expect(response.body._id).toBeDefined();
+    expect(response.body.data._id).toBeDefined();
   });
 
   it('should reject the request if the JWT token is missing', async () => {
