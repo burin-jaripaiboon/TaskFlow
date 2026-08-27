@@ -1,6 +1,7 @@
 const request = require('supertest');
 const jwt = require('jsonwebtoken');
 const app = require('../src/index');
+const bcrypt = require('bcryptjs');
 const { connect, clearDatabase, closeDatabase } = require('./testDatabase');
 
 const User = require('../src/models/User');
@@ -26,10 +27,13 @@ afterAll(async () => {
 describe('POST /api/tasks', () => {
   
   beforeEach(async () => {
+    const salt = await bcrypt.genSalt(10);
+    const password_hash = await bcrypt.hash('Password123!', salt);
+    
     const user = await User.create({
       name: 'testuser',
       email: 'test@example.com',
-      password: 'Password123!'
+      password_hash
     });
 
     token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
