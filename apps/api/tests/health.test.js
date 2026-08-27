@@ -1,7 +1,7 @@
 const request = require('supertest');
 const app = require('../src/index'); 
 
-jest.mock('../src/config/db', () => jest.fn());
+jest.mock('../src/config/databaseConfig', () => jest.fn());
 
 describe('Health Check API', () => {
   it('should return a 200 OK status and a success message', async () => {
