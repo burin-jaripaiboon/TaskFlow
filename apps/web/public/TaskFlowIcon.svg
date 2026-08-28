@@ -15,48 +15,53 @@
     <linearGradient
        id="linearGradient8">
       <stop
-         style="stop-color:#00077a;stop-opacity:1;"
+         style="stop-color:#2ce5f3;stop-opacity:1;"
          offset="0"
-         id="stop8" />
-      <stop
-         style="stop-color:#2253a7;stop-opacity:1;"
-         offset="1"
          id="stop9" />
+      <stop
+         style="stop-color:#a7ffff;stop-opacity:1;"
+         offset="1"
+         id="stop8" />
     </linearGradient>
-    <mask
-       maskUnits="userSpaceOnUse"
-       id="mask8">
-      <path
-         id="path8"
-         style="fill:none;stroke:#ffffff;stroke-width:13.2292;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
-         d="m 64.973231,33.999855 c 0,0 15.42897,46.854294 2.495526,71.459965 M 29.330279,46.134011 c 0,0 14.223728,-10.413102 37.362331,-12.445722 23.138603,-2.032616 32.427378,-10.178395 32.427378,-10.178395" />
-    </mask>
     <linearGradient
        xlink:href="#linearGradient8"
        id="linearGradient9"
-       x1="45.733681"
-       y1="94.077354"
-       x2="82.716583"
-       y2="34.892342"
+       x1="30.519295"
+       y1="55.453403"
+       x2="97.930946"
+       y2="73.516304"
        gradientUnits="userSpaceOnUse" />
+    <mask
+       maskUnits="userSpaceOnUse"
+       id="mask13">
+      <path
+         id="path13"
+         style="fill:none;stroke:#ffffff;stroke-width:13.2292;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+         d="m 64.973231,33.999855 c 0,0 15.42897,46.854294 2.495526,71.459965 M 29.330279,46.134011 c 0,0 14.223728,-10.413102 37.362331,-12.445722 23.138603,-2.032616 32.427378,-10.178395 32.427378,-10.178395" />
+    </mask>
   </defs>
   <g
-     id="layer1">
+     id="layer1"
+     style="stroke:none;stroke-opacity:1">
     <path
-       style="fill:#3961aa;fill-opacity:1;stroke:none;stroke-width:1.32292;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
-       d="M 21.217338,113.73767 C 67.216242,93.582714 49.133489,65.727693 106.43205,59.44657 67.839222,73.073256 69.382829,99.341087 21.217338,113.73767 Z"
-       id="path9-8" />
+       style="fill:#13abe5;fill-opacity:1;stroke:#000076;stroke-width:2.64583;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:16.5;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+       d="M 21.394757,100.96348 C 60.684845,89.996945 58.535655,57.071959 104.30302,50.220764 75.290835,61.18616 62.286054,102.71205 21.394757,100.96348 Z"
+       id="path16" />
+    <path
+       id="path14"
+       style="fill:#ffffff;fill-opacity:1;stroke:#000076;stroke-width:15.875;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       d="m 64.973231,33.999855 c 0,0 15.42897,46.854294 2.495526,71.459965 M 29.330279,46.134011 c 0,0 14.223728,-10.413102 37.362331,-12.445722 23.138603,-2.032616 32.427378,-10.178395 32.427378,-10.178395" />
     <rect
-       style="display:inline;mix-blend-mode:normal;fill:url(#linearGradient9);fill-opacity:1;stroke:none;stroke-width:13.2292;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
-       id="rect2"
+       style="display:inline;mix-blend-mode:normal;fill:url(#linearGradient9);fill-opacity:1;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       id="rect10"
        width="101.83871"
        height="113.72581"
        x="13.66129"
        y="7.8064518"
-       mask="url(#mask8)" />
+       mask="url(#mask13)" />
     <path
-       style="fill:#4584c7;fill-opacity:1;stroke:none;stroke-width:1.32292;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
-       d="M 6.005547,124.38188 C 68.392413,125.63374 69.120718,65.667996 127.23639,62.628647 71.134012,94.740026 88.742572,127.91035 6.005547,124.38188 Z"
+       style="fill:#ffffff;fill-opacity:1;stroke:#000076;stroke-width:2.64583;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:100;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+       d="M 23.392643,116.39801 C 64.489187,111.08535 61.491686,66.377674 119.78478,59.967357 82.666269,74.869059 63.903862,119.92648 23.392643,116.39801 Z"
        id="path9" />
   </g>
 </svg>
