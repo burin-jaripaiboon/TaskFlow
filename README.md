@@ -10,7 +10,8 @@ on how to create a functional web application with best-practices and to be used
 - Typescript with React + Vite framework is used to create UIs those connect to APIs in the frontend.
 - Some CSS styling and animations.
 - Git stages and pushing code to Github repository.
-- Using cloud services to continuously deploy (CD) the application like Vercel (for deploying frontend) and Render (for deploying backend).
+- Create automation tests to avoid deploying failed builds on cloud services using Github actions (CI).
+- Using cloud services to continuously deploy latest valid commits from Github like Vercel (for deploying frontend) and Render (for deploying backend) (CD).
 
 [Click here to view a running website of this project.](https://taskflow-web-theta.vercel.app/)
 
