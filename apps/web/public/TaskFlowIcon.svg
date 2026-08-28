@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="500"
+   height="500"
+   viewBox="0 0 132.29166 132.29167"
+   version="1.1"
+   id="svg1"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1">
+    <linearGradient
+       id="linearGradient8">
+      <stop
+         style="stop-color:#00077a;stop-opacity:1;"
+         offset="0"
+         id="stop8" />
+      <stop
+         style="stop-color:#2253a7;stop-opacity:1;"
+         offset="1"
+         id="stop9" />
+    </linearGradient>
+    <mask
+       maskUnits="userSpaceOnUse"
+       id="mask8">
+      <path
+         id="path8"
+         style="fill:none;stroke:#ffffff;stroke-width:13.2292;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+         d="m 64.973231,33.999855 c 0,0 15.42897,46.854294 2.495526,71.459965 M 29.330279,46.134011 c 0,0 14.223728,-10.413102 37.362331,-12.445722 23.138603,-2.032616 32.427378,-10.178395 32.427378,-10.178395" />
+    </mask>
+    <linearGradient
+       xlink:href="#linearGradient8"
+       id="linearGradient9"
+       x1="45.733681"
+       y1="94.077354"
+       x2="82.716583"
+       y2="34.892342"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <g
+     id="layer1">
+    <path
+       style="fill:#3961aa;fill-opacity:1;stroke:none;stroke-width:1.32292;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       d="M 21.217338,113.73767 C 67.216242,93.582714 49.133489,65.727693 106.43205,59.44657 67.839222,73.073256 69.382829,99.341087 21.217338,113.73767 Z"
+       id="path9-8" />
+    <rect
+       style="display:inline;mix-blend-mode:normal;fill:url(#linearGradient9);fill-opacity:1;stroke:none;stroke-width:13.2292;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       id="rect2"
+       width="101.83871"
+       height="113.72581"
+       x="13.66129"
+       y="7.8064518"
+       mask="url(#mask8)" />
+    <path
+       style="fill:#4584c7;fill-opacity:1;stroke:none;stroke-width:1.32292;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       d="M 6.005547,124.38188 C 68.392413,125.63374 69.120718,65.667996 127.23639,62.628647 71.134012,94.740026 88.742572,127.91035 6.005547,124.38188 Z"
+       id="path9" />
+  </g>
+</svg>

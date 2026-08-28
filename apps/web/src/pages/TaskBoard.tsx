@@ -54,6 +54,7 @@ export default function TaskBoard() {
 
   return (
     <div style={{ padding: '20px' }}>
+      <title>Tasks | TaskFlow</title>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
         <h2 style={{ margin: 0 }}>Your Tasks</h2>
         <button 

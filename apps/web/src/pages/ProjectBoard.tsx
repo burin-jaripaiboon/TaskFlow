@@ -54,6 +54,7 @@ export default function ProjectBoard() {
 
   return (
     <div style={{ padding: '20px' }}>
+      <title>Projects | TaskFlow</title>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
         <h2 style={{ margin: 0 }}>Your Projects</h2>
         <button 
