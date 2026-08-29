@@ -14,7 +14,8 @@ export default function ProjectBoard() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
-  const [showForm, setShowForm] = useState<boolean>(false);
+  const [showCreateForm, setShowCreateForm] = useState<boolean>(false);
+  const [showUpdateForm, setShowUpdateForm] = useState<boolean>(false);
 
   const fetchProjects = async () => {
     setLoading(true);
@@ -40,9 +41,17 @@ export default function ProjectBoard() {
   }, []);
   
   const handleProjectCreated = () => {
-    setShowForm(false);
+    setShowCreateForm(false);
     fetchProjects();
   };
+
+  const handleProjectUpdated = () => {
+    fetchProjects();
+  }
+
+  const handleProjectDeleted = () => {
+    fetchProjects();
+  }
 
   if (loading && projects.length === 0) {
     return <div>Loading your projects...</div>;
@@ -58,14 +67,14 @@ export default function ProjectBoard() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
         <h2 style={{ margin: 0 }}>Your Projects</h2>
         <button 
-          onClick={() => setShowForm(!showForm)}
+          onClick={() => setShowCreateForm(!showCreateForm)}
           style={{ padding: '8px 12px', cursor: 'pointer' }}
         >
-          {showForm ? 'Cancel' : '+ New Project'}
+          {showCreateForm ? 'Cancel' : '+ New Project'}
         </button>
       </div>
 
-      {showForm && <ProjectForm onProjectCreated={handleProjectCreated} />}
+      {showCreateForm && <ProjectForm onProjectCreated={handleProjectCreated} />}
       
       {projects.length === 0 ? (
         <p>No projects found. Time to create one!</p>

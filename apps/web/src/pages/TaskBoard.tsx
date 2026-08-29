@@ -14,9 +14,10 @@ export default function TaskBoard() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
-  const [showForm, setShowForm] = useState<boolean>(false);
+  const [showCreateForm, setShowCreateForm] = useState<boolean>(false);
+  const [showUpdateForm, setShowUpdateForm] = useState<boolean>(false);
 
-  const fetchtasks = async () => {
+  const fetchTasks = async () => {
     setLoading(true);
     try {
       const response = await api.get('/tasks');
@@ -36,13 +37,21 @@ export default function TaskBoard() {
   };
 
   useEffect(() => {
-    fetchtasks();
+    fetchTasks();
   }, []);
   
   const handleTaskCreated = () => {
-    setShowForm(false);
-    fetchtasks();    
+    setShowCreateForm(false);
+    fetchTasks();    
   };
+
+  const handleTaskUpdated = () => {
+    fetchTasks();
+  }
+
+  const handleTaskDeleted = () => {
+    fetchTasks();
+  }
 
   if (loading && tasks.length === 0) {
     return <div>Loading your tasks...</div>;
@@ -58,14 +67,14 @@ export default function TaskBoard() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
         <h2 style={{ margin: 0 }}>Your Tasks</h2>
         <button 
-          onClick={() => setShowForm(!showForm)}
+          onClick={() => setShowCreateForm(!showCreateForm)}
           style={{ padding: '8px 12px', cursor: 'pointer' }}
         >
-          {showForm ? 'Cancel' : '+ New Task'}
+          {showCreateForm ? 'Cancel' : '+ New Task'}
         </button>
       </div>
 
-      {showForm && <TaskForm onTaskCreated={handleTaskCreated} />}
+      {showCreateForm && <TaskForm onTaskCreated={handleTaskCreated} />}
       
       {tasks.length === 0 ? (
         <p>No tasks found. Time to create one!</p>
