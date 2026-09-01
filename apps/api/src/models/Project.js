@@ -9,16 +9,17 @@ const projectSchema = new Schema({
   description: { 
     type: String 
   },
-  ownerId: { 
-    type: Schema.Types.ObjectId, // This is MongoDB's version of a UUID
-    ref: 'User',                 // This tells Mongoose which collection this ID belongs to
-    required: true 
-  },
   isPublicAccess: {
     type: Boolean,
     required: true,
     default: false
+  },
+  ownerId: { 
+    type: Schema.Types.ObjectId, // This is MongoDB's version of a UUID
+    ref: 'User',                 // This tells Mongoose which collection this ID belongs to
+    required: true 
   }
+  
 }, { timestamps: true });
 
 module.exports = mongoose.model('Project', projectSchema);
