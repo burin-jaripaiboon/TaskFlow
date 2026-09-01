@@ -16,6 +16,7 @@ const taskSchema = new Schema({
   },
   priority: {
     type: Number,
+    required: true,
     default: 0,
     validate: {
       validator: Number.isInteger,
