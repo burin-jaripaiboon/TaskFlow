@@ -23,7 +23,7 @@ export default function WelcomePage() {
       </SequentialAnimation>
       <SequentialAnimation delay={1}>
         <p className={`animate-fading-text ${styles.normalText}`} 
-            style={{ fontSize: '18px', marginTop: '0em' , animationDelay: '2.5s', '--fading-text-color': '#292828'} as React.CSSProperties}>
+            style={{ fontSize: '18px', marginTop: '0em' , animationDelay: '1.5s', '--fading-text-color': '#292828'} as React.CSSProperties}>
           A simplified task management solution.
         </p>
       </SequentialAnimation>
