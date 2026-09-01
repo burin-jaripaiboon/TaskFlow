@@ -1,13 +1,8 @@
 import { useState, useEffect } from 'react';
 import api from '../services/api';
-import ProjectForm from '../features/ProjectForm';
-
-
-interface Project {
-  _id: string;
-  title: string;
-  description: string;
-}
+import ProjectCreationForm from '../features/ProjectCreationForm';
+import { Link } from 'react-router-dom';
+import type { Project } from '../services/modelInterfaces';
 
 export default function ProjectBoard() {
 
@@ -15,7 +10,6 @@ export default function ProjectBoard() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
   const [showCreateForm, setShowCreateForm] = useState<boolean>(false);
-  const [showUpdateForm, setShowUpdateForm] = useState<boolean>(false);
 
   const fetchProjects = async () => {
     setLoading(true);
@@ -45,14 +39,6 @@ export default function ProjectBoard() {
     fetchProjects();
   };
 
-  const handleProjectUpdated = () => {
-    fetchProjects();
-  }
-
-  const handleProjectDeleted = () => {
-    fetchProjects();
-  }
-
   if (loading && projects.length === 0) {
     return <div>Loading your projects...</div>;
   }
@@ -74,7 +60,7 @@ export default function ProjectBoard() {
         </button>
       </div>
 
-      {showCreateForm && <ProjectForm onProjectCreated={handleProjectCreated} />}
+      {showCreateForm && <ProjectCreationForm onProjectCreated={handleProjectCreated} />}
       
       {projects.length === 0 ? (
         <p>No projects found. Time to create one!</p>
@@ -89,7 +75,7 @@ export default function ProjectBoard() {
                 borderRadius: '5px' 
               }}
             >
-              <strong>{project.title}</strong>
+              <Link to={`/projects/${project._id}`}>{project.title}</Link>
               <p style={{ margin: '5px 0', fontSize: '14px', color: '#666' }}>
                 {project.description}
               </p>

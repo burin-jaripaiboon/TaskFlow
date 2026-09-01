@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import api from '../services/api';
-import TaskForm from '../features/TaskForm';
+import TaskCreationForm from '../features/TaskCreationForm';
 
 
 interface Task {
@@ -15,7 +15,6 @@ export default function TaskBoard() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
   const [showCreateForm, setShowCreateForm] = useState<boolean>(false);
-  const [showUpdateForm, setShowUpdateForm] = useState<boolean>(false);
 
   const fetchTasks = async () => {
     setLoading(true);
@@ -45,13 +44,6 @@ export default function TaskBoard() {
     fetchTasks();    
   };
 
-  const handleTaskUpdated = () => {
-    fetchTasks();
-  }
-
-  const handleTaskDeleted = () => {
-    fetchTasks();
-  }
 
   if (loading && tasks.length === 0) {
     return <div>Loading your tasks...</div>;
@@ -74,7 +66,7 @@ export default function TaskBoard() {
         </button>
       </div>
 
-      {showCreateForm && <TaskForm onTaskCreated={handleTaskCreated} />}
+      {showCreateForm && <TaskCreationForm onTaskCreated={handleTaskCreated} />}
       
       {tasks.length === 0 ? (
         <p>No tasks found. Time to create one!</p>

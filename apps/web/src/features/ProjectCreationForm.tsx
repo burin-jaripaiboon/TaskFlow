@@ -6,7 +6,7 @@ interface ProjectFormProps {
   onProjectCreated: () => void;
 }
 
-export default function ProjectForm({ onProjectCreated }: ProjectFormProps) {
+export default function ProjectCreationForm({ onProjectCreated }: ProjectFormProps) {
   const [formData, setFormData] = useState({
     title: '',
     description: ''

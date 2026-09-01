@@ -11,7 +11,7 @@ interface Project {
   title: string;
 }
 
-export default function TaskForm({ onTaskCreated }: TaskFormProps) {
+export default function TaskCreationForm({ onTaskCreated }: TaskFormProps) {
   const [formData, setFormData] = useState({
     title: '',
     projectId: '',
