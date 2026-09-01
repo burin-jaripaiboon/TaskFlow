@@ -4,6 +4,7 @@ on how to create a functional web application with best-practices and to be used
 ### Here are the things I've learned while developing this project
 - Setting up Local MongoDB via Docker and Cloud database using Atlas.
 - Designing database relations for the application.
+- Understanding the general idea of how connections in the backend architecture work.
 - Javascript is used to create APIs those connect to database in the backend.
 - How JWT encryption works as an authorization token after the user is authenticated.
 - API testing tools like Postman to verify that APIs are worked as intended.
