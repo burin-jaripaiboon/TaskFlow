@@ -1,0 +1,35 @@
+name: "Frontend TaskFlow Build Test"
+
+# When
+on:
+  push:
+    paths:
+      - 'apps/web/**'
+    branches: [ "main" ]
+  pull_request:
+    paths:
+      - 'apps/web/**'
+    branches: [ "main" ]
+
+# What to do
+jobs:
+  build-and-test:
+    # Operating System
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+
+      - name: Install Frontend Dependencies
+        working-directory: ./apps/web
+        run: npm install
+
+      - name: Build Frontend
+        working-directory: ./apps/web
+        run: npm run build

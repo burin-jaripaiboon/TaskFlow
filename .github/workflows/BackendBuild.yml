@@ -1,10 +1,14 @@
-name: TaskFlow CI
+name: Backend TaskFlow Build & Logical Test
 
 # When
 on:
   push:
+    paths:
+      - 'apps/api/**'
     branches: [ "main" ]
   pull_request:
+    paths:
+      - 'apps/api/**'
     branches: [ "main" ]
 
 # What to do
@@ -21,14 +25,6 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: '24'
-
-      - name: Install Frontend Dependencies
-        working-directory: ./apps/web
-        run: npm install
-
-      - name: Build Frontend
-        working-directory: ./apps/web
-        run: npm run build
 
       - name: Install Backend Dependencies
         working-directory: ./apps/api
