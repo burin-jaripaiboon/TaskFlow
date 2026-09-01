@@ -9,9 +9,10 @@ class AppError extends Error {
   }
 }
 
-exports.getProjectById = async = async (projectId, userId) => {
+exports.getProjectById = async (projectId, userId) => {
+
   const project = await Project.findById(projectId);
-  
+
   if (!project) {
     throw new AppError('Project not found', 404);
   }
@@ -21,7 +22,7 @@ exports.getProjectById = async = async (projectId, userId) => {
   }
 
   const isProjectOwner = project.ownerId.toString() === userId.toString();
-  const isContributor = await Task.find({ projectId , assignedTo : userId });
+  const isContributor = await Task.exists({ projectId , assignedTo : userId });
 
   if (!isProjectOwner && !isContributor) {
     throw new AppError('You do not have permission to view this project', 403);
