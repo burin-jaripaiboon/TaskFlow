@@ -9,16 +9,22 @@ interface ProjectFormProps {
 export default function ProjectCreationForm({ onProjectCreated }: ProjectFormProps) {
   const [formData, setFormData] = useState({
     title: '',
-    description: ''
+    description: '',
+    isPublicAccess: false
   });
   const [error, setError] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    const { name: event_name, value: event_value, type: event_type } = e.target;
+    
+    const isCheckbox = event_type === 'checkbox';
+    const event_checked = isCheckbox ? (e.target as HTMLInputElement).checked : false;
+
+    setFormData(prev => ({
+      ...prev,
+      [event_name]: isCheckbox ? event_checked : event_value
+    }));
   };
 
   const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
@@ -29,7 +35,7 @@ export default function ProjectCreationForm({ onProjectCreated }: ProjectFormPro
     try {
       await api.post('/projects', formData);
       
-      setFormData({ title: '', description: '' });
+      setFormData({ title: '', description: '', isPublicAccess: false });
       
       onProjectCreated();
       
@@ -49,7 +55,7 @@ export default function ProjectCreationForm({ onProjectCreated }: ProjectFormPro
 
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
         <div>
-          <label style={{ display: 'block', fontSize: '14px', marginBottom: '5px' }}>Project Title *</label>
+          <label style={{ display: 'block', textAlign: 'left', fontSize: '14px', marginBottom: '5px' }}>Project Title *</label>
           <input 
             type="text" 
             name="title" 
@@ -61,12 +67,23 @@ export default function ProjectCreationForm({ onProjectCreated }: ProjectFormPro
         </div>
 
         <div>
-          <label style={{ display: 'block', fontSize: '14px', marginBottom: '5px' }}>Description</label>
+          <label style={{ display: 'block', textAlign: 'left', fontSize: '14px', marginBottom: '5px' }}>Description</label>
           <textarea 
             name="description" 
             value={formData.description} 
             onChange={handleChange} 
             style={{ width: '100%', padding: '8px', boxSizing: 'border-box', minHeight: '60px' }}
+          />
+        </div>
+
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <label style={{ textAlign: 'left' , fontSize: '14px', marginBottom: '5px' }}>Anyone can view project</label>
+          <input 
+            type="checkbox" 
+            name="isPublicAccess"
+            checked={formData.isPublicAccess}
+            onChange={handleChange}
+            style={{ boxSizing: 'border-box' }}
           />
         </div>
 
