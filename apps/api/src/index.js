@@ -40,7 +40,7 @@ app.use('/api/tasks', taskRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/projects', projectRoutes);
 
-app.all('(.*)', (req, res, next) => {
+app.all('/{*splat}', (req, res, next) => {
   next(new AppError(`API Error: ${req.originalUrl} doesn't exist!`, 404));
 });
 
