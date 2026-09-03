@@ -44,7 +44,7 @@ export default function ProjectPage() {
             <h2>{project.title}</h2>
             <p>{project.isPublicAccess? "Public" : "Restricted"}</p>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <div style={{ display: 'flex', gap: '10px' }}>
               <p style={{ margin: '5px 0', fontSize: '14px', color: '#666' }}>
                 {project.description}
               </p>
