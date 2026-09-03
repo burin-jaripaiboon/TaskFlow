@@ -1,15 +1,16 @@
 const Project = require('../models/Project');
 const Task = require('../models/Task');
+const AppError = require('../utilities/AppError')
 
-
-class AppError extends Error {
-  constructor(message, statusCode) {
-    super(message);
-    this.statusCode = statusCode;
-  }
+const getPublicProjects = async () => {
+  return await Project.find({ isPublicAccess : true });
 }
 
-exports.getProjectById = async (projectId, userId) => {
+const getProjects = async (filter) => {
+  return await Project.find(filter);
+}
+
+const getProjectById = async (projectId, userId) => {
 
   const project = await Project.findById(projectId);
 
@@ -29,4 +30,58 @@ exports.getProjectById = async (projectId, userId) => {
   }
   
   return project;
+};
+
+const createProject = async (projectData) => {
+
+  if (!projectData.title) {
+    throw new AppError('Please provide a project title.', 400);
+  }
+
+  return await Project.create(projectData);
+  
+}
+
+const updateProject = async (projectId, ownerId, updateData) => {
+  const project = await Project.findById(projectId);
+
+  if (!project) {
+    throw new AppError('Project not found.', 404);
+  }
+
+  const isProjectOwner = project.ownerId.toString() === ownerId.toString();
+  if (!isProjectOwner) {
+    throw new AppError('Unauthorized Change.', 401);
+  }
+
+  if (updateData.title !== undefined) project.title = updateData.title;
+  if (updateData.description !== undefined) project.description = updateData.description;
+  if (updateData.isPublicAccess !== undefined) project.isPublicAccess = updateData.isPublicAccess;
+
+  return await project.save();
+}
+
+const deleteProject = async (projectId, ownerId) => {
+  const project = await Project.findById(projectId);
+
+  if (!project) {
+    throw new AppError('Project not found.', 404);
+  }
+
+  const isProjectOwner = project.ownerId.toString() === ownerId.toString();
+  if (!isProjectOwner) {
+    throw new AppError('Forbidden Change.', 403);
+  }
+
+  await project.deleteOne();
+  return await Task.deleteMany({ projectId: projectId })
+}
+
+module.exports = {
+  getPublicProjects,
+  getProjects,
+  getProjectById,
+  createProject,
+  updateProject,
+  deleteProject
 };

@@ -1,13 +1,34 @@
 const Task = require('../models/Task');
+const User = require('../models/User');
+const AppError = require('../utilities/AppError');
 
-class AppError extends Error {
-  constructor(message, statusCode) {
-    super(message);
-    this.statusCode = statusCode;
-  }
+const getTasks = async (filter) => {
+  return await Task.find(filter)
+    .populate('assignedTo', 'name email')
+    .populate('projectId', 'title description');
 }
 
-exports.updateTask = async (taskId, userId, updateData) => {
+const createTask = async ({ title, description, status, priority, projectId, assignedName }) => {
+  if (!title || !projectId) {
+    return response.status(400).json({ success: false, message: "Please provide a title and projectId." });
+  }
+  
+  const assignedTo = assignedName? await User.findOne({ name: assignedName }) : null;
+  if (assignedName && !assignedTo) {
+    throw new AppError('Assigned user not found', 400);
+  }
+
+  return await Task.create({
+    title,
+    description,
+    status,
+    priority,
+    projectId,
+    assignedTo
+  });
+}
+
+const updateTask = async (taskId, userId, updateData) => {
   const task = await Task.findById(taskId).populate('projectId');
   
   if (!task) {
@@ -36,4 +57,27 @@ exports.updateTask = async (taskId, userId, updateData) => {
 
   await task.save();
   return task;
+};
+
+const deleteTask = async (taskId, ownerId) => {
+  const task = await Task.findById(taskId).populate('projectId');
+  
+  if (!task) {
+    throw new AppError('Task not found.', 404);
+  }
+
+  const isProjectOwner = task.projectId.ownerId.toString() === ownerId.toString(); 
+
+  if (!isProjectOwner) {
+    throw new AppError('Forbidden: Only the project owner can delete tasks.', 403);
+  }
+
+  await task.deleteOne();
+}
+
+module.exports = {
+  getTasks,
+  createTask,
+  updateTask,
+  deleteTask
 };
