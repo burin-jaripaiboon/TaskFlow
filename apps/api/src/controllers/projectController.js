@@ -1,5 +1,3 @@
-const Project = require('../models/Project');
-const Task = require('../models/Task');
 const projectService = require('../services/projectService');
 
 // GET /api/projects

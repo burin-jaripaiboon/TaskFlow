@@ -1,4 +1,3 @@
-const Task = require('../models/Task');
 const taskService = require('../services/taskService');
 
 // GET /api/tasks

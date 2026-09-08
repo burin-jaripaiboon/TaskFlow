@@ -1,48 +1,50 @@
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
-const User = require('../models/User');
 const authService = require('../services/authService');
 
 exports.register = async (request, response) => {
-    const userData = request.body;
-    const token = authService.generateToken(await authService.createUser(userData));
-    response.status(201).json({ success: true, token });
+  const { name, email, password } = request.body;
+  const { accessToken, deviceToken, expiresAt } = await authService.registerUser({ name, email, password });
+  response.cookie('deviceToken', deviceToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict',
+    expires: expiresAt
+  });
+  response.status(201).json({ success: true, accessToken });
 };
 
 exports.login = async (request, response) => {
-  try {
-    const { identifier, password } = request.body;
-
-    if (!identifier || !password) {
-      return response.status(400).json({ success: false, message: "Please provide an email/username and password" });
-    }
-    
-    const user = await User.findOne({
-      $or: [
-        { email: identifier },
-        { name: identifier.toLowerCase() }
-      ]
-    });
-    
-    if (!user) {
-      return response.status(401).json({ success: false, message: 'Invalid credentials.' });
-    }
-
-    const isMatch = await bcrypt.compare(password, user.password_hash);
-    if (!isMatch) {
-      return response.status(401).json({ success: false, message: 'Invalid credentials.' });
-    }
-
-    const payload = { userId: user._id };
-    
-    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1d' });
-
-    response.status(200).json({ success: true, token });
-  } catch (error) {
-    console.error(error);
-    response.status(500).json({ success: false, message: 'Server error.' });
-  }
+  const { identifier, password } = request.body;
+  const { accessToken, deviceToken, expiresAt } = await authService.loginUser({ identifier, password });
+  response.cookie('deviceToken', deviceToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict',
+    expires: expiresAt
+  });
+  response.status(201).json({ success: true, accessToken });
 };
 
-exports.refreshToken = async (request, response) => {
+exports.logout = async (request, response) => {
+  const deviceToken = request.cookies.deviceToken;
+  await authService.logoutUser(deviceToken);
+  response.clearCookie('deviceToken', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict',
+  });
+  response.status(201).json({ success: true });
+};
+
+exports.renewTokens = async (request, response) => {
+  const oldDeviceToken = request.cookies.deviceToken;
+  const { deviceToken, accessToken, expiresAt } = await authService.renewTokens(oldDeviceToken);
+  response.cookie('deviceToken', deviceToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict',
+    expires: expiresAt
+  });
+  response.status(201).json({ success: true, accessToken });
 }
+
+

@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const AppError = require('../utilities/AppError');
 
 exports.protect = (request, response, next) => {
   const authHeader = request.header('Authorization');
@@ -9,14 +10,17 @@ exports.protect = (request, response, next) => {
   }
 
   try {
-    const token = authHeader.split(' ')[1];
-    
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    
+    const accessToken = authHeader.split(' ')[1];
+    const decoded = jwt.verify(accessToken, process.env.JWT_ACCESS_SECRET);
     request.user = decoded.userId;
     
     next();
   } catch (error) {
-    response.status(401).json({ success: false, message: 'Token is not valid' });
+    if (error.name === 'TokenExpiredError') {
+      const accessExpiredError = new AppError(`Access timeout. Retrying...`, 401);
+      accessExpiredError.errorCode = 'ACCESS_TOKEN_EXPIRED';
+      throw accessExpiredError;
+    }
+    throw new AppError(`Invalid Token!`, 401);
   }
 };
