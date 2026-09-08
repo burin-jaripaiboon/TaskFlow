@@ -7,7 +7,7 @@ const { connect, clearDatabase, closeDatabase } = require('./testDatabase');
 const User = require('../src/models/User');
 const Project = require('../src/models/Project');
 
-process.env.JWT_SECRET = 'test_secret_key';
+process.env.JWT_ACCESS_SECRET = 'test_secret_key';
 
 let token;
 let testProject;
@@ -36,7 +36,7 @@ describe('POST /api/tasks', () => {
       password_hash
     });
 
-    token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    token = jwt.sign({ id: user._id }, process.env.JWT_ACCESS_SECRET, { expiresIn: '1h' });
 
     testProject = await Project.create({
       title: 'Test Project',
