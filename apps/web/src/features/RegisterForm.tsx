@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { ChangeEvent, SubmitEvent } from 'react';
 import NavButton from '../components/utilities/NavButton';
 import api from '../services/api';
+import { useAuthStore } from '../stores/useAuthStore';
 
 export default function RegisterForm({ setIsLoggedIn }: { setIsLoggedIn: (isLoggedIn: boolean) => void }) {
   
@@ -10,9 +11,8 @@ export default function RegisterForm({ setIsLoggedIn }: { setIsLoggedIn: (isLogg
     email: '',
     password: '',
   });
-  
   const [error, setError] = useState<string>('');
-
+  const setAccessToken = useAuthStore((state) => state.setAccessToken);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     let { name, value } = e.target;
@@ -34,16 +34,14 @@ export default function RegisterForm({ setIsLoggedIn }: { setIsLoggedIn: (isLogg
 
     try {
       const response = await api.post('/auth/register', formData);
-
-      localStorage.setItem('accessToken', response.data.accessToken);
-      
+      setAccessToken(response.data.accessToken);
       setIsLoggedIn(true);
-      
     } catch (err: any) {
       const errorMessage = err.response?.data?.message || err.message || 'Authentication failed';
       setError(errorMessage);
     }
   };
+  
   return (
     <div className="auth-container">
       <h2>Create an Account</h2>
