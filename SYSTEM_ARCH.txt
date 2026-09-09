@@ -23,7 +23,7 @@ TaskFlow/
 │       │   ├── hooks/         # Reusable React logic (useClickOutside, useDebounce)
 │       │   ├── pages/         # Page routes (/login, /dashboard)
 │       │   ├── services/      # Axios / Fetch HTTP client setup
-│       │   └── store/         # Global state management (useAuthStore, useUIStore)
+│       │   └── stores/         # Global state management (useAuthStore, useUIStore)
 │       ├── public/            # Static assets (images, icons)
 │       └── package.json
 │
@@ -49,7 +49,7 @@ apps/web (The Frontend)
     components/: Small, stateless UI elements used throughout the app (e.g., custom buttons, inputs).
     features/: Houses domain-specific UI components grouped together. The TaskBoard component, task drag-and-drop logic, and filter controls live here.
     services/: Configures API communication logic (like setting up Axios base URLs and auth headers) so individual components don't repeat raw fetch calls.
-    
+
 packages/shared-types (The Shared Layer) [WAIT UNTIL BACKEND CONVERSION TO TYPESCRIPT]
     This shared package exports interfaces like interface Task { id: string; title: string; status: TaskStatus }.
     Importing this single definition into both the backend API and frontend UI guarantees that if a field name changes on the server, the frontend highlights the mismatch at compile time before hitting production.
