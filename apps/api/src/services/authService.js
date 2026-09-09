@@ -114,6 +114,7 @@ const renewTokens = async (oldDeviceToken) => {
     payload = jwt.verify(oldDeviceToken, process.env.JWT_DEVICE_SECRET);
   } catch (error) {
     if (error.name === 'TokenExpiredError') {
+      await logoutUser(oldDeviceToken);
       const deviceExpiredError = new AppError('Session expired. Please login and try again.', 401);
       deviceExpiredError.errorCode = DEVICE_TOKEN_EXPIRED_ERROR_CODE;
       throw deviceExpiredError;
@@ -125,13 +126,13 @@ const renewTokens = async (oldDeviceToken) => {
   const user = await User.findById(userId);
 
 
-  if (!user) throw new AppError('User no longer exists', 404);
+  if (!user) throw new AppError('User no longer / never exists', 404);
 
   const deviceSession = user.activeDevices.find(device => device.deviceId === deviceId);
 
   // Device removed
   if (!deviceSession) {
-    const revokedError = new AppError('Session revoked. Please log in again.', 401);
+    const revokedError = new AppError('Session revoked / doesn\'t exist. Please log in again.', 401);
     revokedError.errorCode = DEVICE_TOKEN_EXPIRED_ERROR_CODE;
     throw revokedError;
   }
@@ -141,8 +142,7 @@ const renewTokens = async (oldDeviceToken) => {
   // Device token Reused
   if (!isMatch) {
     // Remove device
-    user.activeDevices = user.activeDevices.filter(device => device.deviceId !== deviceId);
-    await user.save();
+    logoutUser(oldDeviceToken);
     
     const breachError = new AppError('Security Alert: Session compromised. You have been logged out of this device.', 401);
     breachError.errorCode = DEVICE_TOKEN_EXPIRED_ERROR_CODE;
