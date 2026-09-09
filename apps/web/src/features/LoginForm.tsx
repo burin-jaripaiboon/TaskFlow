@@ -34,7 +34,7 @@ export default function LoginForm({ setIsLoggedIn }: { setIsLoggedIn: (isLoggedI
     try {
       const response = await api.post('/auth/login', formData);
 
-      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('accessToken', response.data.accessToken);
       
       setIsLoggedIn(true);
       

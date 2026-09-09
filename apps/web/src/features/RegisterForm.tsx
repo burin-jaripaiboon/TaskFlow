@@ -29,21 +29,21 @@ export default function RegisterForm({ setIsLoggedIn }: { setIsLoggedIn: (isLogg
   };
 
   const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
-      event.preventDefault(); 
-      setError('');       
-  
-      try {
-        const response = await api.post('/auth/register', formData);
-  
-        localStorage.setItem('token', response.data.token);
-        
-        setIsLoggedIn(true);
-        
-      } catch (err: any) {
-        const errorMessage = err.response?.data?.message || err.message || 'Authentication failed';
-        setError(errorMessage);
-      }
-    };
+    event.preventDefault(); 
+    setError('');       
+
+    try {
+      const response = await api.post('/auth/register', formData);
+
+      localStorage.setItem('accessToken', response.data.accessToken);
+      
+      setIsLoggedIn(true);
+      
+    } catch (err: any) {
+      const errorMessage = err.response?.data?.message || err.message || 'Authentication failed';
+      setError(errorMessage);
+    }
+  };
   return (
     <div className="auth-container">
       <h2>Create an Account</h2>
