@@ -6,7 +6,12 @@ const api = axios.create({
     'Content-Type': 'application/json'
   }
 });
-
+const forceLogoutUser = async () => {
+  // Wipe out the access token from React's memory (Context/Redux/Zustand)
+  // clearAuthStore();
+  localStorage.removeItem('userPreferences');
+  localStorage.removeItem('accessToken');
+}
 
 api.interceptors.request.use(
   (config) => {
@@ -27,13 +32,13 @@ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    const status = error.response?.status;
     const errorCode = error.response?.data?.errorCode;
-    if (status === 401 && errorCode === 'ACCESS_TOKEN_EXPIRED' && !originalRequest._retry) {
+    if (errorCode === 'ACCESS_TOKEN_EXPIRED' && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
         const renewAccessResponse = await axios.post(`${BASE_URL}/auth/renew`, {}, { withCredentials: true });
         const newAccessToken = renewAccessResponse.data.accessToken;
+        localStorage.setItem('accessToken', newAccessToken);
         originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
         return api(originalRequest);
       } catch (refreshError) {
@@ -41,16 +46,8 @@ api.interceptors.response.use(
         return Promise.reject(refreshError);
       }
     }
-    if (status === 401 && errorCode === 'DEVICE_TOKEN_EXPIRED') {
-      
-      // 1. Wipe out the access token from React's memory (Context/Redux/Zustand)
-      // clearAuthStore();
-
-      // 2. Optionally clear any sensitive local storage data
-      localStorage.removeItem('userPreferences');
-
-      // 3. Force the browser to redirect to the login page
-      // Using window.location completely resets the React app state
+    if (errorCode === 'DEVICE_TOKEN_EXPIRED') {
+      forceLogoutUser();
       window.location.href = '/login?reason=expired'; 
     }
     return Promise.reject(error);
