@@ -1,27 +1,29 @@
-taskflow-monorepo/
+TaskFlow/
 ├── .github/
 │   └── workflows/             # CI/CD automation scripts
 │       └── deploy.yml
 │
 ├── apps/
-│   ├── api/                   # BACKEND SERVICE (Node.js/Express)
+│   ├── api/                   # BACKEND SERVICE (Node.js/>Express<)
 │   │   ├── src/
 │   │   │   ├── config/        # Database connections, environment variables
-│   │   │   ├── controllers/   # Request/response logic (e.g., handles task routes)
+│   │   │   ├── controllers/   # Extracts req data, calls services, formatting HTTP responses
 │   │   │   ├── middleware/    # Auth checks, error handling
 │   │   │   ├── models/        # Schemas (Mongoose / SQL models)
 │   │   │   ├── routes/        # URL endpoint declarations (/api/tasks)
+│   │   │   ├── services/      # Fat layer: Core business logic, database operations, throwing errors
 │   │   │   └── index.ts       # Backend entry point
 │   │   ├── .env.example       # Database credentials & API keys template
 │   │   └── package.json
 │   │
-│   └── web/                   # FRONTEND APPLICATION (React/Next.js)
+│   └── web/                   # FRONTEND APPLICATION (>React</Next.js)
 │       ├── src/
 │       │   ├── components/    # Reusable UI (Button, Card, Modal)
 │       │   ├── features/      # Feature blocks (TaskBoard, ProjectList)
-│       │   ├── hooks/         # Custom hooks for state & API fetching
+│       │   ├── hooks/         # Reusable React logic (useClickOutside, useDebounce)
 │       │   ├── pages/         # Page routes (/login, /dashboard)
-│       │   └── services/      # Axios / Fetch HTTP client setup
+│       │   ├── services/      # Axios / Fetch HTTP client setup
+│       │   └── store/         # Global state management (useAuthStore, useUIStore)
 │       ├── public/            # Static assets (images, icons)
 │       └── package.json
 │
@@ -34,16 +36,20 @@ taskflow-monorepo/
 ├── package.json               # Root scripts (run both frontend & backend together)
 └── README.md
 
+Additional Information:
 
 apps/api (The Backend)
     config/: Houses connection logic to PostgreSQL or MongoDB, making sure database pools are managed properly.
     middleware/: Acts as security checkpoints. For example, authMiddleware.ts intercepts incoming requests, verifies JWT user tokens, and blocks unauthorized access before code reaches the controllers.
-    controllers/: Contains business logic. When POST /api/tasks is called, taskController.ts extracts the task data, runs validation, and executes the database insert.
-    models/: Defines data shape and validation rules (like the Mongoose schemas built earlier).
+    controllers/: When a route is called, Controller extracts request data, call services to compute data, and format the results to HTTP response
+    services/: Contains business logics. When called extract data from the model, runs validation, and modify the data in the model.
+    models/: Defines data shape and validation rules (Mongoose schemas).
+
 apps/web (The Frontend)
     components/: Small, stateless UI elements used throughout the app (e.g., custom buttons, inputs).
     features/: Houses domain-specific UI components grouped together. The TaskBoard component, task drag-and-drop logic, and filter controls live here.
     services/: Configures API communication logic (like setting up Axios base URLs and auth headers) so individual components don't repeat raw fetch calls.
-packages/shared-types (The Shared Layer)
-    Commercial apps use TypeScript across the entire stack. This shared package exports interfaces like interface Task { id: string; title: string; status: TaskStatus }.
+    
+packages/shared-types (The Shared Layer) [WAIT UNTIL BACKEND CONVERSION TO TYPESCRIPT]
+    This shared package exports interfaces like interface Task { id: string; title: string; status: TaskStatus }.
     Importing this single definition into both the backend API and frontend UI guarantees that if a field name changes on the server, the frontend highlights the mismatch at compile time before hitting production.
