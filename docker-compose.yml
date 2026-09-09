@@ -1,6 +1,6 @@
 services:
   database:
-    image: mongo:latest # Or postgres:15
+    image: mongo:latest
     ports:
       - "27017:27017"
     environment:
