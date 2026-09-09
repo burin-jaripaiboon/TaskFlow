@@ -4,7 +4,7 @@ services:
     ports:
       - "27017:27017"
     environment:
-      MONGO_INITDB_DATABASE: taskflow
+      MONGO_INITDB_DATABASE: TaskFlow
     volumes:
       - mongo-data:/data/db
 
