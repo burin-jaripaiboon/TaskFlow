@@ -27,7 +27,7 @@ const allowedOrigins = [
 
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow requests with no origin (mobile apps, server-to-server, postman)
+    // Allow requests with no origin (future mobile apps, server-to-server, postman)
     if (!origin) return callback(null, true);
     
     // Whitelist Check
