@@ -7,6 +7,7 @@ on how to create a functional web application with best-practices and to be used
 - Understanding the general idea of how connections in the backend architecture work.
 - Javascript is used to create APIs those connect to database in the backend.
 - How JWT encryption works as an authorization token after the user is authenticated.
+- Providing continuous authorization with Refresh Tokens via HttpOnly cookie.
 - API testing tools like Postman to verify that APIs are worked as intended.
 - Typescript with React + Vite framework is used to create UIs those connect to APIs in the frontend.
 - Some CSS styling and animations.
