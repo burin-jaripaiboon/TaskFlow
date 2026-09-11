@@ -2,7 +2,7 @@ import { create } from 'zustand';
 
 interface AuthState {
   accessToken: string | null;
-  user: any | null; // You can type this with your shared-types later
+  user: any | null;
   setAccessToken: (token: string) => void;
   clearAuth: () => void;
 }

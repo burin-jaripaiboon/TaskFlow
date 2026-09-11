@@ -1,14 +1,27 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import type { Project } from "../services/modelInterfaces";
+import { useAuthStore } from "../stores/useAuthStore";
 import api from "../services/api";
 
 export default function ProjectPage() {
   const [project, setProject] = useState<Project>();
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
   const { id } = useParams();
+  useEffect(() => {
+    const userToken = useAuthStore.getState().accessToken;
+    if (userToken) {
+      try {
+        const payload = JSON.parse(atob(userToken.split('.')[1]));
+        setCurrentUserId(payload.userId); 
+      } catch (e) {
+        console.error("Failed to decode token");
+      }
+    }
+  }, []);
   const fetchProject = async () => {
     setLoading(true);
     try {
@@ -25,7 +38,7 @@ export default function ProjectPage() {
 
   useEffect(() => {
     fetchProject();
-  } , [])
+  } , [id])
 
   if (loading) {
     return <div>Loading project...</div>;
@@ -41,7 +54,10 @@ export default function ProjectPage() {
         <div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
             <title>Project - {project.title} | TaskFlow</title>
-            <h2>{project.title}</h2>
+            <span style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+              <h2>{project.title}</h2>
+              { project.ownerId === currentUserId && (<Link className='link-color' to={`/projects/${id}/edit`}>✎ Edit</Link>) }
+            </span>
             <p>{project.isPublicAccess? "Public" : "Restricted"}</p>
           </div>
           <div style={{ textAlign: 'left', gap: '10px' }}>
