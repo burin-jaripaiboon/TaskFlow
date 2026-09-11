@@ -1,10 +1,10 @@
 import LoginForm from '../features/LoginForm';
 
-export default function LoginPage({ setIsLoggedIn }: { setIsLoggedIn: (isLoggedIn: boolean) => void }) {
+export default function LoginPage() {
   return (
     <div>
       <title>Login | TaskFlow</title>
-      <LoginForm setIsLoggedIn={setIsLoggedIn}/>
+      <LoginForm />
     </div>
   );
 }

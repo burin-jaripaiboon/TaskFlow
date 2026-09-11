@@ -1,10 +1,10 @@
 import RegisterForm from '../features/RegisterForm';
 
-export default function RegisterPage({ setIsLoggedIn }: { setIsLoggedIn: (isLoggedIn: boolean) => void }) {
+export default function RegisterPage() {
   return (
     <div>
       <title>Register | TaskFlow</title>
-      <RegisterForm setIsLoggedIn={setIsLoggedIn} />
+      <RegisterForm />
     </div>
   );
 }

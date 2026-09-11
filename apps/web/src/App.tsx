@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { useAuthStore } from './stores/useAuthStore';
+import api from './services/api';
 import TaskBoard from './pages/TaskBoard';
 import ProjectBoard from './pages/ProjectBoard';
 import CreateProjectPage from './pages/CreateProjectPage';
@@ -14,7 +16,40 @@ import ProjectPage from './pages/ProjectPage';
 
 
 export default function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(!!localStorage.getItem('token'));
+  const accessToken = useAuthStore((state) => state.accessToken);
+  const setAccessToken = useAuthStore((state) => state.setAccessToken);
+
+  const [isInitializing, setIsInitializing] = useState(true);
+
+  const isLoggedIn = !!accessToken;
+  const initializeAuth = async () => {
+    const hasSession = localStorage.getItem('hasSession');
+    if (!hasSession) {
+      setIsInitializing(false);
+      return; 
+    }
+    
+    try {
+      const response = await api.post('/auth/renew');
+      setAccessToken(response.data.accessToken);
+    } catch (error) {
+      console.log('No cookies')
+    } finally {
+      setIsInitializing(false);
+    }
+  };
+
+  useEffect(() => {
+    initializeAuth();
+  }, [setAccessToken]);
+
+  if (isInitializing) {
+    return (
+      <div className="flex h-screen w-screen items-center justify-center">
+        <p>Loading TaskFlow...</p> 
+      </div>
+    );
+  }
 
   return (
     <BrowserRouter>
@@ -27,16 +62,16 @@ export default function App() {
             
             {/* Auth Routes */}
             <Route path="/login" element={
-              !isLoggedIn ? <LoginPage setIsLoggedIn={setIsLoggedIn} /> : <Navigate to="/dashboard" />
+              !isLoggedIn ? <LoginPage /> : <Navigate to="/dashboard" />
             } />
             
             <Route path="/register" element={
-              !isLoggedIn ? <RegisterPage setIsLoggedIn={setIsLoggedIn} /> : <Navigate to="/dashboard" />
+              !isLoggedIn ? <RegisterPage /> : <Navigate to="/dashboard" />
             } />
 
             {/* Protected Routes */}
             <Route element={<ProtectedRoute isLoggedIn={isLoggedIn} />}>
-              <Route element={<ApplicationLayout setIsLoggedIn={setIsLoggedIn} />}>
+              <Route element={<ApplicationLayout />}>
                 <Route path="/dashboard" element={
                   <DashBoard />
                 } />

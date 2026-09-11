@@ -1,29 +1,37 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useAuthStore } from '../../stores/useAuthStore';
 import styles from '../../styles/Sidebar.module.css';
+import api from '../../services/api';
+
 
 const navLinks = [
   { name: 'Dashboard', path: '/dashboard', icon: '📊' },
   { name: 'Projects', path: '/projects', icon: '📁' },
   { name: 'Tasks', path: '/tasks', icon: '✅' },
 ];
-export default function RetractableSidebar({ setIsLoggedIn }: { setIsLoggedIn: (val: boolean) => void }) {
+export default function RetractableSidebar() {
   const [isOpen, setIsOpen] = useState(true);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
+  const clearAuth = useAuthStore((state) => state.clearAuth);
 
   const handleLogoutClick = () => {
     setShowLogoutModal(true); 
   };
 
   // 3. The actual logout logic (only runs if confirmed)
-  const confirmLogout = () => {
-    localStorage.removeItem('token');
-    setIsLoggedIn(false);
-    navigate('/');
+  const confirmLogout = async () => {
+    try {
+      await api.post('/auth/logout');
+    } finally {
+      localStorage.removeItem('hasSession')
+      navigate('/')
+      clearAuth();
+    }
   };
 
   return (

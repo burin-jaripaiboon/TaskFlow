@@ -4,7 +4,7 @@ import NavButton from '../components/utilities/NavButton';
 import api from '../services/api';
 import { useAuthStore } from '../stores/useAuthStore';
 
-export default function RegisterForm({ setIsLoggedIn }: { setIsLoggedIn: (isLoggedIn: boolean) => void }) {
+export default function RegisterForm() {
   
   const [formData, setFormData] = useState({
     name: '',
@@ -34,8 +34,8 @@ export default function RegisterForm({ setIsLoggedIn }: { setIsLoggedIn: (isLogg
 
     try {
       const response = await api.post('/auth/register', formData);
+      localStorage.setItem('hasSession', 'true');
       setAccessToken(response.data.accessToken);
-      setIsLoggedIn(true);
     } catch (err: any) {
       const errorMessage = err.response?.data?.message || err.message || 'Authentication failed';
       setError(errorMessage);

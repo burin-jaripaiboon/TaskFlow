@@ -11,6 +11,7 @@ const api = axios.create({
 });
 
 const forceLogoutUser = async () => {
+  localStorage.removeItem('hasSession')
   localStorage.removeItem('userPreferences');
   useAuthStore.getState().clearAuth();
 }
