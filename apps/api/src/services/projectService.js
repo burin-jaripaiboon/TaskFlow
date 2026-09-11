@@ -10,7 +10,7 @@ const getProjects = async (filter) => {
   return await Project.find(filter);
 }
 
-const getProjectById = async (projectId, userId) => {
+const getProjectById = async ({ projectId, userId }) => {
 
   const project = await Project.findById(projectId);
 
@@ -32,17 +32,22 @@ const getProjectById = async (projectId, userId) => {
   return project;
 };
 
-const createProject = async (projectData) => {
+const createProject = async ({ title, description, isPublicAccess, ownerId }) => {
 
-  if (!projectData.title) {
+  if (!title) {
     throw new AppError('Please provide a project title.', 400);
   }
 
-  return await Project.create(projectData);
+  return await Project.create({
+    title,
+    description,
+    isPublicAccess,
+    ownerId
+  });
   
 }
 
-const updateProject = async (projectId, ownerId, updateData) => {
+const updateProject = async ({ projectId, ownerId, title, description, isPublicAccess }) => {
   const project = await Project.findById(projectId);
 
   if (!project) {
@@ -54,14 +59,14 @@ const updateProject = async (projectId, ownerId, updateData) => {
     throw new AppError('Unauthorized Change.', 401);
   }
 
-  if (updateData.title !== undefined) project.title = updateData.title;
-  if (updateData.description !== undefined) project.description = updateData.description;
-  if (updateData.isPublicAccess !== undefined) project.isPublicAccess = updateData.isPublicAccess;
+  if (title !== undefined || title !== '') project.title = title;
+  if (description !== undefined) project.description = description;
+  if (isPublicAccess !== undefined) project.isPublicAccess = isPublicAccess;
 
   return await project.save();
 }
 
-const deleteProject = async (projectId, ownerId) => {
+const deleteProject = async ({ projectId, ownerId }) => {
   const project = await Project.findById(projectId);
 
   if (!project) {

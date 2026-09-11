@@ -28,9 +28,13 @@ const createTask = async ({ title, description, status, priority, projectId, ass
   });
 }
 
-const updateTask = async (taskId, userId, updateData) => {
+const updateTask = async ({ taskId, userId, title, description, status, priority, assignedName }) => {
   const task = await Task.findById(taskId).populate('projectId');
-  
+  const assignedTo = assignedName? await User.findOne({ name: assignedName }) : null;
+
+  if (assignedName && !assignedTo) {
+    throw new AppError('Assigned user not found', 400);
+  }
   if (!task) {
     throw new AppError('Task not found', 404);
   }
@@ -43,15 +47,15 @@ const updateTask = async (taskId, userId, updateData) => {
   }
 
   if (isProjectOwner) {
-    if (updateData.title) task.title = updateData.title;
-    if (updateData.description) task.description = updateData.description;
-    if (updateData.status) task.status = updateData.status;
-    if (updateData.priority) task.priority = updateData.priority;
-    if (updateData.assignedTo !== undefined) task.assignedTo = updateData.assignedTo;
+    if (title) task.title = updateData.title;
+    if (description !== undefined) task.description = updateData.description;
+    if (status) task.status = updateData.status;
+    if (priority !== undefined) task.priority = updateData.priority;
+    if (assignedTo !== undefined) task.assignedTo = updateData.assignedTo;
 
   } else if (isAssignee) {
-    if (updateData.status) {
-      task.status = updateData.status;
+    if (status) {
+      task.status = status;
     }
   }
 
@@ -59,7 +63,7 @@ const updateTask = async (taskId, userId, updateData) => {
   return task;
 };
 
-const deleteTask = async (taskId, ownerId) => {
+const deleteTask = async ({ taskId, ownerId }) => {
   const task = await Task.findById(taskId).populate('projectId');
   
   if (!task) {

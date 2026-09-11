@@ -26,9 +26,9 @@ exports.createTask = async (request, response) => {
 exports.updateTask = async (request, response) => {
   const taskId = request.params.id;
   const userId = request.user;
-  const updateData = request.body;
+  const { title, description, priority, projectId, assignedName } = request.body;
 
-  const updatedTask = await taskService.updateTask(taskId, userId, updateData);
+  const updatedTask = await taskService.updateTask({ taskId, userId, title, description, priority, projectId, assignedName });
 
   response.status(200).json({ success: true, data: updatedTask });
 };
@@ -37,6 +37,6 @@ exports.updateTask = async (request, response) => {
 exports.deleteTask = async (request, response) => {
   const taskId = request.params.id;
   const userId = request.user;
-  await taskService.deleteTask(taskId, userId);
+  await taskService.deleteTask({ taskId, userId });
   response.status(200).json({ success: true, message: "Task successfully deleted." });
 }

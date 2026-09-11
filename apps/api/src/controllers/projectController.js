@@ -12,7 +12,7 @@ exports.getProjectById = async (request, response) => {
   const projectId = request.params.id;
   const userId = request.user;
 
-  const project = await projectService.getProjectById(projectId, userId);
+  const project = await projectService.getProjectById({ projectId, userId });
 
   response.status(200).json({ success: true, data: project });
 };
@@ -35,10 +35,10 @@ exports.createProject = async (request, response) => {
 // PUT /api/projects/:id
 exports.updateProject = async (request, response) => {
   const projectId = request.params.id;
-  const updateData = request.body;
+  const { title, description, isPublicAccess } = request.body;
   const ownerId = request.user;
 
-  const project = await projectService.updateProject(projectId, ownerId, updateData);
+  const project = await projectService.updateProject({ projectId, ownerId, title, description, isPublicAccess });
  
   response.status(200).json({ success: true, data: project });
 };
@@ -48,7 +48,7 @@ exports.deleteProject = async (request, response) => {
   const projectId = request.params.id;
   const ownerId = request.user;
 
-  const deletedTasks = await projectService.deleteProject(projectId, ownerId);
+  const deletedTasks = await projectService.deleteProject({ projectId, ownerId });
 
   response.status(200).json({ 
     success: true, 
