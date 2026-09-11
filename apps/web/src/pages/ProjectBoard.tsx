@@ -61,22 +61,18 @@ export default function ProjectBoard() {
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
           {projects.map((project) => (
-            <div 
+            <NavButton to={`/projects/${project._id}`}
               key={project._id} 
+              className='individual-navigation'
               style={{ 
-                padding: '10px', 
-                border: '1px solid #ccc', 
-                borderRadius: '5px' 
-                
+                display: 'block'
               }}
             >
-              <NavButton to={`/projects/${project._id}`}>
-                <h3>{project.title}</h3>
-                <p style={{ margin: '5px 0', fontSize: '14px', color: '#666' }}>
-                  {project.description}
-                </p>
-              </NavButton>
-            </div>
+              <h3>{project.title}</h3>
+              <p style={{ margin: '5px 0', fontSize: '14px', color: '#666' }}>
+                {project.description}
+              </p>
+            </NavButton>
           ))}
         </div>
       )}

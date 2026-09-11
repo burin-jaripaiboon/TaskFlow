@@ -66,8 +66,8 @@ body {
 }
 
 h1,
-h2 {
-  padding: 0 0.2em;
+h2,
+h3 {
   font-family: var(--heading);
   font-weight: 500;
   color: var(--text-h);
@@ -86,6 +86,12 @@ h2 {
   line-height: 118%;
   letter-spacing: -0.24px;
   margin: 0 0 8px;
+}
+
+h3 {
+  font-size: 24px;
+  line-height: 118%;
+  margin: 0;
 }
 p {
   color: var(--text);
@@ -128,4 +134,16 @@ button {
   align-items: center;
   justify-content: center;
   flex-direction: column;
+}
+
+.individual-navigation {
+  padding: 10px 20px;
+  border: 1px solid #ccc;
+  border-radius: 16px;
+  background-color: #1d1e24;
+  text-align: left;
+}
+
+.individual-navigation:hover {
+  background-color: var(--bg);
 }

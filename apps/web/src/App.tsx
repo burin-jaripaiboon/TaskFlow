@@ -30,10 +30,10 @@ export default function App() {
     }
 
     try {
-      const response = await api.post('/auth/renew', {} , { withCredentials: true });
+      const response = await api.post('/auth/refresh');
       setAccessToken(response.data.accessToken);
     } catch (error) {
-      console.log('No cookies')
+      console.error('Invalid refresh token!')
     } finally {
       setIsInitializing(false);
     }
