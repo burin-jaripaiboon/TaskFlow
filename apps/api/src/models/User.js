@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const activeDeviceSchema = new Schema({
-  deviceId: { type: String, required: true },
+  sessionId: { type: String, required: true },
   token_hash: { type: String, required: true },
   expiresAt: { type: Date, required: true }
 }, { timestamps: true });
@@ -27,7 +27,7 @@ const userSchema = new Schema({
     type: String, 
     required: true 
   },
-  activeDevices: [activeDeviceSchema]
+  activeSessions: [activeDeviceSchema]
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', userSchema);

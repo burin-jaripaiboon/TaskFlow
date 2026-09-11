@@ -2,8 +2,8 @@ const authService = require('../services/authService');
 
 exports.register = async (request, response) => {
   const { name, email, password } = request.body;
-  const { accessToken, deviceToken, expiresAt } = await authService.registerUser({ name, email, password });
-  response.cookie('deviceToken', deviceToken, {
+  const { accessToken, refreshToken, expiresAt } = await authService.registerUser({ name, email, password });
+  response.cookie('refreshToken', refreshToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'strict',
@@ -14,8 +14,8 @@ exports.register = async (request, response) => {
 
 exports.login = async (request, response) => {
   const { identifier, password } = request.body;
-  const { accessToken, deviceToken, expiresAt } = await authService.loginUser({ identifier, password });
-  response.cookie('deviceToken', deviceToken, {
+  const { accessToken, refreshToken, expiresAt } = await authService.loginUser({ identifier, password });
+  response.cookie('refreshToken', refreshToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'strict',
@@ -25,9 +25,9 @@ exports.login = async (request, response) => {
 };
 
 exports.logout = async (request, response) => {
-  const deviceToken = request.cookies.deviceToken;
-  await authService.logoutUser(deviceToken);
-  response.clearCookie('deviceToken', {
+  const refreshToken = request.cookies.refreshToken;
+  await authService.logoutUser(refreshToken);
+  response.clearCookie('refreshToken', {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'strict',
@@ -35,10 +35,11 @@ exports.logout = async (request, response) => {
   response.status(201).json({ success: true });
 };
 
-exports.renewTokens = async (request, response) => {
-  const oldDeviceToken = request.cookies.deviceToken;
-  const { deviceToken, accessToken, expiresAt } = await authService.renewTokens(oldDeviceToken);
-  response.cookie('deviceToken', deviceToken, {
+exports.refreshTokens = async (request, response) => {
+
+  const oldRefreshToken = request.cookies.refreshToken;
+  const { refreshToken, accessToken, expiresAt } = await authService.refreshTokens(oldRefreshToken);
+  response.cookie('refreshToken', refreshToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'strict',
