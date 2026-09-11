@@ -4,7 +4,8 @@ const User = require('../models/User');
 const AppError = require('../utilities/AppError');
 
 const MAX_DEVICES = 5;
-const DEVICE_TOKEN_EXPIRED_ERROR_CODE = 'DEVICE_TOKEN_EXPIRED';
+const DEVICE_TOKEN_EXPIRED_ERROR_CODE = 'REFRESH_COOKIE_EXPIRED';
+const NO_DEVICE_TOKEN_ERROR_CODE = 'NO_REFRESH_COOKIE';
 
 const createUser = async ({ name, email, password }) => {
   if (!name || !email || !password) {
@@ -107,8 +108,12 @@ const logoutUser = async (deviceToken) => {
 }
 
 const renewTokens = async (oldDeviceToken) => {
-  if (!oldDeviceToken) throw new AppError('No Session token provided!', 401);
-   
+  if (!oldDeviceToken) {
+    const noDeviceError = new AppError('No Session token provided!', 401);
+    noDeviceError.errorCode = NO_DEVICE_TOKEN_ERROR_CODE;
+    throw noDeviceError;
+  }
+
   let payload;
   try {
     payload = jwt.verify(oldDeviceToken, process.env.JWT_DEVICE_SECRET);

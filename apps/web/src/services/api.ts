@@ -5,6 +5,7 @@ const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 const api = axios.create({
   baseURL: BASE_URL,
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json'
   }
@@ -36,10 +37,14 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
     const errorCode = error.response?.data?.errorCode;
+    if (errorCode === 'NO_REFRESH_COOKIE') {
+      forceLogoutUser();
+      window.location.href = '/login?reason=unauthorized'; 
+    }
     if (errorCode === 'ACCESS_TOKEN_EXPIRED' && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
-        const renewAccessResponse = await axios.post(`${BASE_URL}/auth/renew`, {}, { withCredentials: true });
+        const renewAccessResponse = await axios.post(`${BASE_URL}/auth/renew`);
         const newAccessToken = renewAccessResponse.data.accessToken;
 
         useAuthStore.getState().setAccessToken(newAccessToken);
@@ -52,10 +57,11 @@ api.interceptors.response.use(
         return Promise.reject(refreshError);
       }
     }
-    if (errorCode === 'DEVICE_TOKEN_EXPIRED') {
+    if (errorCode === 'REFRESH_COOKIE_EXPIRED') {
       forceLogoutUser();
       window.location.href = '/login?reason=expired'; 
     }
+
     return Promise.reject(error);
   }
 );
