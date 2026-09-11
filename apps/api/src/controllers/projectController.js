@@ -3,7 +3,7 @@ const projectService = require('../services/projectService');
 // GET /api/projects
 exports.getProjects = async (request, response) => {
   const userId = request.user;
-  const projects = projectService.getProjects({ ownerId: userId });
+  const projects = await projectService.getProjects({ ownerId: userId });
   response.status(200).json({ success: true, count: projects.length, data: projects });
 };
 
