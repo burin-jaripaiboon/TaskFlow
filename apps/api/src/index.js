@@ -19,7 +19,26 @@ const AppError = require('./utilities/AppError');
 
 app.use(cookieParser());
 app.use(express.json());
-app.use(cors());
+
+const allowedOrigins = [
+  'http://localhost:5173',
+  process.env.FRONTEND_URL
+].filter(Boolean);
+
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow requests with no origin (mobile apps, server-to-server, postman)
+    if (!origin) return callback(null, true);
+    
+    // Whitelist Check
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
 
 // Health Check Endpoint
 app.get('/api/health', (request, response) => {
