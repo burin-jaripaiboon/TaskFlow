@@ -1,15 +1,13 @@
 import { useState, useEffect } from 'react';
 import api from '../services/api';
-import ProjectCreationForm from '../features/ProjectCreationForm';
-import { Link } from 'react-router-dom';
 import type { Project } from '../services/modelInterfaces';
+import NavButton from '../components/utilities/NavButton';
 
 export default function ProjectBoard() {
 
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
-  const [showCreateForm, setShowCreateForm] = useState<boolean>(false);
 
   const fetchProjects = async () => {
     setLoading(true);
@@ -34,10 +32,6 @@ export default function ProjectBoard() {
     fetchProjects();
   }, []);
   
-  const handleProjectCreated = () => {
-    setShowCreateForm(false);
-    fetchProjects();
-  };
 
   if (loading && projects.length === 0) {
     return <div>Loading your projects...</div>;
@@ -52,15 +46,15 @@ export default function ProjectBoard() {
       <title>Projects | TaskFlow</title>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
         <h2 style={{ margin: 0 }}>Your Projects</h2>
-        <button 
-          onClick={() => setShowCreateForm(!showCreateForm)}
+        <NavButton 
+          to='/projects/create'
           style={{ padding: '8px 12px', cursor: 'pointer' }}
         >
-          {showCreateForm ? 'Cancel' : '+ New Project'}
-        </button>
+          + New Project
+        </NavButton>
       </div>
 
-      {showCreateForm && <ProjectCreationForm onProjectCreated={handleProjectCreated} />}
+      
       
       {projects.length === 0 ? (
         <p>No projects found. Time to create one!</p>
@@ -73,12 +67,15 @@ export default function ProjectBoard() {
                 padding: '10px', 
                 border: '1px solid #ccc', 
                 borderRadius: '5px' 
+                
               }}
             >
-              <Link to={`/projects/${project._id}`}>{project.title}</Link>
-              <p style={{ margin: '5px 0', fontSize: '14px', color: '#666' }}>
-                {project.description}
-              </p>
+              <NavButton to={`/projects/${project._id}`}>
+                <h3>{project.title}</h3>
+                <p style={{ margin: '5px 0', fontSize: '14px', color: '#666' }}>
+                  {project.description}
+                </p>
+              </NavButton>
             </div>
           ))}
         </div>

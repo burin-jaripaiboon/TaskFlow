@@ -28,9 +28,9 @@ export default function App() {
       setIsInitializing(false);
       return; 
     }
-    
+
     try {
-      const response = await api.post('/auth/renew');
+      const response = await api.post('/auth/renew', {} , { withCredentials: true });
       setAccessToken(response.data.accessToken);
     } catch (error) {
       console.log('No cookies')
