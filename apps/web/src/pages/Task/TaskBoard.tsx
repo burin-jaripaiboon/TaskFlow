@@ -1,13 +1,7 @@
 import { useState, useEffect } from 'react';
-import api from '../services/api';
-import TaskCreationForm from '../features/TaskCreationForm';
-
-
-interface Task {
-  _id: string;
-  title: string;
-  status: 'TODO' | 'IN_PROGRESS' | 'DONE';
-}
+import api from '../../services/api';
+import TaskCreationForm from '../../features/Task/CreateTaskForm';
+import type { Task } from '../../services/modelInterfaces';
 
 export default function TaskBoard() {
 

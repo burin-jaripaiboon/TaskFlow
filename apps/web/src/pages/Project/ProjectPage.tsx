@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import type { Project } from "../services/modelInterfaces";
-import { useAuthStore } from "../stores/useAuthStore";
-import api from "../services/api";
+import type { Project } from "../../services/modelInterfaces";
+import { useAuthStore } from "../../stores/useAuthStore";
+import api from "../../services/api";
+import NavButton from "../../components/utilities/NavButton";
 
 export default function ProjectPage() {
   const [project, setProject] = useState<Project>();
@@ -64,6 +65,7 @@ export default function ProjectPage() {
               <p style={{ margin: '5px 0', fontSize: '14px', color: '#666' }}>
                 {project.description}
               </p>
+              { project.ownerId === currentUserId && (<NavButton to={`/projects/${id}/tasks/create`}>+ New Task</NavButton>) }
           </div>
         </div>
       ) : (

@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import type { ChangeEvent, SubmitEvent } from 'react';
-import NavButton from '../components/utilities/NavButton';
-import api from '../services/api';
-import { useAuthStore } from '../stores/useAuthStore';
+import NavButton from '../../components/utilities/NavButton';
+import api from '../../services/api';
+import { useAuthStore } from '../../stores/useAuthStore';
 
-export default function LoginForm() {
+export default function RegisterForm() {
+  
   const [formData, setFormData] = useState({
+    name: '',
+    email: '',
     password: '',
-    identifier: ''
   });
   const [error, setError] = useState<string>('');
   const setAccessToken = useAuthStore((state) => state.setAccessToken);
@@ -31,32 +33,39 @@ export default function LoginForm() {
     setError('');       
 
     try {
-      const response = await api.post('/auth/login', formData);
+      const response = await api.post('/auth/register', formData);
       localStorage.setItem('hasSession', 'true');
       setAccessToken(response.data.accessToken);
     } catch (err: any) {
       const errorMessage = err.response?.data?.message || err.message || 'Authentication failed';
-			setError(errorMessage);
+      setError(errorMessage);
     }
   };
-
+  
   return (
     <div className="auth-container">
-      <h2>Log In</h2>
+      <h2>Create an Account</h2>
       
       {error && <p style={{ color: 'red', fontWeight: 'bold' }}>{error}</p>}
 
       <form onSubmit={handleSubmit}>
-        
         <div style={{ marginBottom: '1rem' }}>
-					<label style={{ display: 'block' }}>Email or Username</label>
-					<input 
-						type="text" 
-						name="identifier" 
-						value={formData.identifier} 
-						onChange={handleChange} 
-						required 
-					/>
+          <label style={{ display: 'block' }}>Username (a-z, 0-9, _ only)</label>
+          <input 
+            type="text" 
+            name="name" 
+              value={formData.name} 
+              onChange={handleChange} 
+              required 
+            />
+          <label style={{ display: 'block' }}>Email</label>
+          <input 
+            type="email" 
+            name="email" 
+            value={formData.email} 
+            onChange={handleChange} 
+            required 
+          />
         </div>
 
         <div style={{ marginBottom: '1rem' }}>
@@ -71,22 +80,22 @@ export default function LoginForm() {
         </div>
 
         <button type="submit" style={{ marginTop: '1em', cursor: 'pointer' }}>
-          Log In
+          Register
         </button>
       </form>
 
       <NavButton 
-        className="link-color"
-        to="/register"
+        to="/login"
         style={{ 
           marginTop: '1.5rem', 
           background: 'none', 
           border: 'none', 
+          color: '#0066cc', 
           cursor: 'pointer',
           textDecoration: 'underline'
         }}
       >
-        Need an account? Register
+        Already have an account? Log in
       </NavButton>
     </div>
   );

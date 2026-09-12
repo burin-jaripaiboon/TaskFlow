@@ -1,19 +1,20 @@
 import { useState } from 'react';
 import type { ChangeEvent, SubmitEvent } from 'react';
-import api from '../services/api';
+import api from '../../services/api';
+import type { ProjectData } from '../../services/modelInterfaces';
 
 interface ProjectFormProps {
   onProjectCreated: () => void;
 }
 
-export default function ProjectCreationForm({ onProjectCreated }: ProjectFormProps) {
-  const [formData, setFormData] = useState({
+export default function CreateProjectForm({ onProjectCreated }: ProjectFormProps) {
+  const [formData, setFormData] = useState<ProjectData>({
     title: '',
     description: '',
     isPublicAccess: false
   });
-  const [error, setError] = useState<string>('');
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [submitError, setSubmitError] = useState<string>('');
+  const [isCreating, setIsCreating] = useState<boolean>(false);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name: event_name, value: event_value, type: event_type } = e.target;
@@ -29,8 +30,8 @@ export default function ProjectCreationForm({ onProjectCreated }: ProjectFormPro
 
   const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError('');
-    setIsLoading(true);
+    setSubmitError('');
+    setIsCreating(true);
 
     try {
       await api.post('/projects', formData);
@@ -41,9 +42,8 @@ export default function ProjectCreationForm({ onProjectCreated }: ProjectFormPro
       
     } catch (err: any) {
       console.error("Error creating project:", err);
-      setError(err.response?.data?.message || 'Failed to create project');
-    } finally {
-      setIsLoading(false);
+      setSubmitError(err.response?.data?.message || 'Failed to create project');
+      setIsCreating(false);
     }
   };
 
@@ -51,11 +51,11 @@ export default function ProjectCreationForm({ onProjectCreated }: ProjectFormPro
     <div style={{ padding: '15px', marginBottom: '20px'}}>
       <h3 style={{ marginTop: 0 }}>Create New Project</h3>
       
-      {error && <p style={{ color: 'red', fontSize: '14px' }}>{error}</p>}
+      {submitError && <p style={{ color: 'red', fontSize: '14px' }}>{submitError}</p>}
 
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', textAlign: 'left', gap: '10px' }}>
         <div>
-          <label style={{ display: 'block', textAlign: 'left', fontSize: '14px', marginBottom: '5px' }}>Project Title *</label>
+          <label style={{ display: 'block', fontSize: '14px', marginBottom: '5px' }}>Project Title *</label>
           <input 
             type="text" 
             name="title" 
@@ -67,7 +67,7 @@ export default function ProjectCreationForm({ onProjectCreated }: ProjectFormPro
         </div>
 
         <div>
-          <label style={{ display: 'block', textAlign: 'left', fontSize: '14px', marginBottom: '5px' }}>Description</label>
+          <label style={{ display: 'block', fontSize: '14px', marginBottom: '5px' }}>Description</label>
           <textarea 
             name="description" 
             value={formData.description} 
@@ -77,7 +77,7 @@ export default function ProjectCreationForm({ onProjectCreated }: ProjectFormPro
         </div>
 
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <label style={{ textAlign: 'left' , fontSize: '14px', marginBottom: '5px' }}>Anyone can view project</label>
+          <label style={{ fontSize: '14px', marginBottom: '5px' }}>Anyone can view project</label>
           <input 
             type="checkbox" 
             name="isPublicAccess"
@@ -89,17 +89,17 @@ export default function ProjectCreationForm({ onProjectCreated }: ProjectFormPro
 
         <button 
           type="submit" 
-          disabled={isLoading}
+          disabled={isCreating}
           style={{ 
             padding: '10px', 
-            backgroundColor: isLoading ? '#ccc' : '#0066cc', 
+            backgroundColor: isCreating ? '#ccc' : '#0066cc', 
             color: 'white', 
             border: 'none', 
             borderRadius: '3px',
-            cursor: isLoading ? 'not-allowed' : 'pointer'
+            cursor: isCreating ? 'not-allowed' : 'pointer'
           }}
         >
-          {isLoading ? 'Creating...' : 'Create Project'}
+          {isCreating ? 'Creating...' : 'Create Project'}
         </button>
       </form>
     </div>

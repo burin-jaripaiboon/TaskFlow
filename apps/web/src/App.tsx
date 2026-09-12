@@ -2,17 +2,19 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuthStore } from './stores/useAuthStore';
 import api from './services/api';
-import TaskBoard from './pages/TaskBoard';
-import ProjectBoard from './pages/ProjectBoard';
-import CreateProjectPage from './pages/CreateProjectPage';
-import EditProjectPage from './pages/EditProjectPage';
+import TaskBoard from './pages/Task/TaskBoard';
+import ProjectBoard from './pages/Project/ProjectBoard';
+import CreateProjectPage from './pages/Project/CreateProjectPage';
+import EditProjectPage from './pages/Project/EditProjectPage';
 import WelcomePage from './pages/WelcomePage';
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
+import LoginPage from './pages/Authentication/LoginPage';
+import RegisterPage from './pages/Authentication/RegisterPage';
 import ApplicationLayout from './components/ApplicationLayout';
 import DashBoard from './pages/Dashboard';
 import ProtectedRoute from './components/ProtectedRoute';
-import ProjectPage from './pages/ProjectPage';
+import ProjectPage from './pages/Project/ProjectPage';
+import CreateTaskPage from './pages/Task/CreateTaskPage';
+import EditTaskPage from './pages/Task/EditTaskPage';
 
 
 export default function App() {
@@ -90,6 +92,14 @@ export default function App() {
 
                 <Route path="/projects/:id/edit" element={
                   <EditProjectPage />
+                } />
+
+                <Route path="/projects/:projectId/tasks/create" element={
+                  <CreateTaskPage />
+                } />
+
+                <Route path="/projects/:projectId/tasks/:taskId/edit" element={
+                  <EditTaskPage />
                 } />
                 
                 <Route path="/tasks" element={

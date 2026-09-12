@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import ProjectCreationForm from '../features/ProjectCreationForm';
+import CreateProjectForm from '../../features/Project/CreateProjectForm';
 
 export default function CreateProjectPage() {
   const navigate = useNavigate();
@@ -9,7 +9,7 @@ export default function CreateProjectPage() {
 
   return (
     <div>
-      <ProjectCreationForm onProjectCreated={onProjectCreated}/>
+      <CreateProjectForm onProjectCreated={onProjectCreated}/>
     </div>
   );
 }
