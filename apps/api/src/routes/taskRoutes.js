@@ -10,7 +10,7 @@ router.route('/')
   .post(protect, createTask);
 
 router.route('/:id')
-  .put(validateObjectId, protect, updateTask)
+  .patch(validateObjectId, protect, updateTask)
   .delete(validateObjectId, protect, deleteTask);
 
 module.exports = router;

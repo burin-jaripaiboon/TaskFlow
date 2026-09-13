@@ -20,7 +20,7 @@ export interface TaskData {
 }
 export type taskStatusType = typeof taskStatus[keyof typeof taskStatus];
 const taskStatus = {
-  TO_DO: 'TO_DO',
+  TODO: 'TODO',
   IN_PROGRESS: 'IN_PROGRESS',
   DONE: 'DONE'
 } as const

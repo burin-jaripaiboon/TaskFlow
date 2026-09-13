@@ -2,8 +2,8 @@ import { useAuthStore } from "../stores/useAuthStore";
 import api from "./api";
 
 interface validatorProp {
-  projectId?: string
-  getResponse?: boolean
+  projectId: string;
+  getResponse?: boolean;
 }
 
 const validateProjectOwner = async ({ projectId, getResponse }: validatorProp) => {

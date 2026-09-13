@@ -11,7 +11,7 @@ router.route('/')
 
 router.route('/:id')
   .get(validateObjectId, protect, getProjectById)
-  .put(validateObjectId, protect, updateProject)
+  .patch(validateObjectId, protect, updateProject)
   .delete(validateObjectId, protect, deleteProject);
 
 module.exports = router;

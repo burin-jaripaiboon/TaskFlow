@@ -10,6 +10,13 @@ export default function EditProjectPage() {
   const [projectData, setProjectData] = useState<ProjectData>();
   const navigate = useNavigate();
   const { id } = useParams();
+  if (!id) {
+    return (
+      <div>
+        <p className='error-text'>No project ID given!</p>
+      </div>
+    );
+  }
 
   useEffect(() => {
     
@@ -54,6 +61,7 @@ export default function EditProjectPage() {
       <EditProjectForm 
         onProjectEdited={onProjectEdited}
         initialData={projectData}
+        projectId={id}
       />
     </div>
   );

@@ -10,12 +10,14 @@ exports.getTasks = async (request, response) => {
 
 // POST /api/tasks
 exports.createTask = async (request, response) => {
-    const { title, description, priority, projectId, assignedName } = request.body;
+    const { title, description, priority, projectId, status, assignedName } = request.body;
+    console.log(request.body);
     const task = await taskService.createTask({
       title,
       description,
       priority,
       projectId,
+      status,
       assignedName
     });
 

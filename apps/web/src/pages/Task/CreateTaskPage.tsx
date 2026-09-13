@@ -8,6 +8,13 @@ export default function CreateTaskPage() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const navigate = useNavigate();
   const { projectId } = useParams();
+  if (!projectId) {
+    return (
+      <div>
+        <p className='error-text'>No project ID given!</p>
+      </div>
+    );
+  }
   const verifyOwner = async () => {
     setIsLoading(true);
     try {
@@ -43,6 +50,7 @@ export default function CreateTaskPage() {
     <div>
       <CreateTaskForm 
         onTaskCreated={onTaskCreated}
+        projectId={projectId}
       />
     </div>
   );
