@@ -16,8 +16,8 @@
   --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
+  font: 18px/normal var(--sans);
+  letter-spacing: normal;
   color-scheme: dark light;
   color: var(--text);
   background: var(--bg);
@@ -95,6 +95,12 @@ h3 {
   line-height: 118%;
   margin: 0;
 }
+
+strong {
+  font-size: 20px;
+  margin: 0;
+  color: var(--text)
+}
 p {
   color: var(--text);
   margin: 0;
@@ -117,7 +123,9 @@ code {
 }
 
 button {
-  font-size: 20px;
+  font: 20px var(--sans);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
   padding: 0.7em 1.5em;
   justify-content: center;
   align-items: center;

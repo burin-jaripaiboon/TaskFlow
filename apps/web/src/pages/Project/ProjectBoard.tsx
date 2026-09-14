@@ -54,8 +54,6 @@ export default function ProjectBoard() {
         </NavButton>
       </div>
 
-      
-      
       {projects.length === 0 ? (
         <p>No projects found. Time to create one!</p>
       ) : (
@@ -68,7 +66,7 @@ export default function ProjectBoard() {
                 display: 'block'
               }}
             >
-              <h3>{project.title}</h3>
+              <strong>{project.title}</strong>
               <p style={{ margin: '5px 0', fontSize: '14px', color: '#666' }}>
                 {project.description}
               </p>

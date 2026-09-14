@@ -1,14 +1,11 @@
 import { useState, useEffect } from 'react';
 import api from '../../services/api';
-import TaskCreationForm from '../../features/Task/CreateTaskForm';
 import type { Task } from '../../services/modelInterfaces';
 
 export default function TaskBoard() {
-
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
-  const [showCreateForm, setShowCreateForm] = useState<boolean>(false);
 
   const fetchTasks = async () => {
     setLoading(true);
@@ -32,11 +29,6 @@ export default function TaskBoard() {
   useEffect(() => {
     fetchTasks();
   }, []);
-  
-  const handleTaskCreated = () => {
-    setShowCreateForm(false);
-    fetchTasks();    
-  };
 
 
   if (loading && tasks.length === 0) {
@@ -52,15 +44,7 @@ export default function TaskBoard() {
       <title>Tasks | TaskFlow</title>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
         <h2 style={{ margin: 0 }}>Your Tasks</h2>
-        <button 
-          onClick={() => setShowCreateForm(!showCreateForm)}
-          style={{ padding: '8px 12px', cursor: 'pointer' }}
-        >
-          {showCreateForm ? 'Cancel' : '+ New Task'}
-        </button>
       </div>
-
-      {showCreateForm && <TaskCreationForm onTaskCreated={handleTaskCreated} />}
       
       {tasks.length === 0 ? (
         <p>No tasks found. Time to create one!</p>
@@ -69,10 +53,9 @@ export default function TaskBoard() {
           {tasks.map((task) => (
             <div 
               key={task._id} 
+              className='content-cell'
               style={{ 
-                padding: '10px', 
-                border: '1px solid #ccc', 
-                borderRadius: '5px' 
+                display: 'block',
               }}
             >
               <strong>{task.title}</strong>
