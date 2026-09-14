@@ -2,9 +2,11 @@ const projectService = require('../services/projectService');
 
 // GET /api/projects
 exports.getProjects = async (request, response) => {
+  const page = parseInt(request.query.page) || 1;
+  const limit = parseInt(request.query.limit) || 20;
   const userId = request.user;
-  const projects = await projectService.getProjects({ ownerId: userId });
-  response.status(200).json({ success: true, count: projects.length, data: projects });
+  const projectsPage = await projectService.getProjects({ ownerId: userId }, page, limit);
+  response.status(200).json({ success: true, ...projectsPage });
 };
 
 // GET /api/projects/:id

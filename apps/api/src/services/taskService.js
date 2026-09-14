@@ -2,10 +2,27 @@ const Task = require('../models/Task');
 const User = require('../models/User');
 const AppError = require('../utilities/AppError');
 
-const getTasks = async (filter) => {
-  return await Task.find(filter)
+const getTasks = async (filter, page = 1, limit = 20) => {
+  const skipCount = (page - 1) * limit;
+
+  const tasks = await Task.find(filter)
     .populate('assignedTo', 'name email')
-    .populate('projectId', 'title description');
+    .populate('projectId', 'title description')
+    .sort({ priority: -1, createdAt: -1 })
+    .skip(skipCount)
+    .limit(limit);
+
+  const totalTasks = await Task.countDocuments(filter);
+
+  return {
+    data: tasks,
+    metadata: {
+      currentPage: Number(page),
+      totalPages: Math.ceil(totalTasks / limit),
+      totalTasks,
+      hasMore: (page * limit) < totalTasks
+    }
+  };
 }
 
 const createTask = async ({ title, description, status, priority, projectId, assignedName }) => {

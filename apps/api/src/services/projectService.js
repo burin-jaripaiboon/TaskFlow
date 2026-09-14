@@ -2,12 +2,25 @@ const Project = require('../models/Project');
 const Task = require('../models/Task');
 const AppError = require('../utilities/AppError')
 
-const getPublicProjects = async () => {
-  return await Project.find({ isPublicAccess : true });
-}
+const getProjects = async (filter, page = 1, limit = 20) => {
+  const skipCount = (page - 1) * limit;
 
-const getProjects = async (filter) => {
-  return await Project.find(filter);
+  const projects = await Project.find(filter)
+    .sort({ priority: -1, createdAt: -1 })
+    .skip(skipCount)
+    .limit(limit);
+
+  const totalProjects = await Project.countDocuments(filter);
+
+  return {
+    data: projects,
+    metadata: {
+      currentPage: Number(page),
+      totalPages: Math.ceil(totalProjects / limit),
+      totalProjects,
+      hasMore: (page * limit) < totalProjects
+    }
+  };
 }
 
 const getProjectById = async ({ projectId, userId }) => {

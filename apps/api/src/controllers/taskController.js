@@ -2,10 +2,12 @@ const taskService = require('../services/taskService');
 
 // GET /api/tasks
 exports.getTasks = async (request, response) => {
+  const page = parseInt(request.query.page) || 1;
+  const limit = parseInt(request.query.limit) || 20;
   const filter = request.query.projectId ? { projectId: request.query.projectId } : { assignedTo: request.user };
-  const tasks = await taskService.getTasks(filter)
+  const tasksPage = await taskService.getTasks(filter, page, limit);
   
-  response.status(200).json({ success: true, count: tasks.length, data: tasks });
+  response.status(200).json({ success: true, ...tasksPage });
 };
 
 // POST /api/tasks
