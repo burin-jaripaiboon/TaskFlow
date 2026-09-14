@@ -6,7 +6,7 @@ interface validatorProp {
   getResponse?: boolean;
 }
 
-const validateTaskAddress = async ({ taskId, projectId, getResponse }: validatorProp) => {
+const verifyTaskAddress = async ({ taskId, projectId, getResponse }: validatorProp) => {
   try {
     const response = await api.get(`/tasks/${taskId}`);
     const taskData = response.data.data || response.data;
@@ -23,4 +23,4 @@ const validateTaskAddress = async ({ taskId, projectId, getResponse }: validator
     throw new Error('Failed to validate task\'s address.');
   }
 };
-export default validateTaskAddress;
+export default verifyTaskAddress;

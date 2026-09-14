@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import EditProjectForm from "../../features/Project/EditProjectForm";
 import { useEffect, useState } from "react";
 import type { ProjectData } from '../../services/modelInterfaces';
-import validateProjectOwner from "../../services/validateProjectOwner";
+import verifyProjectOwner from "../../services/verifyProjectOwner";
 
 export default function EditProjectPage() {
   const [pageError, setPageError] = useState<string>(''); 
@@ -23,7 +23,7 @@ export default function EditProjectPage() {
     const fetchProject = async () => {
       setIsLoading(true);
       try {
-        const response = await validateProjectOwner({ projectId: id, getResponse: true });
+        const response = await verifyProjectOwner({ projectId: id, getResponse: true });
         const { title, description, isPublicAccess } = response?.data.data || response?.data;
         setProjectData({
           title,

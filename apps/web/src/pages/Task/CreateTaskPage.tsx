@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import CreateTaskForm from "../../features/Task/CreateTaskForm";
-import validateProjectOwner from "../../services/validateProjectOwner";
+import verifyProjectOwner from "../../services/verifyProjectOwner";
 
 export default function CreateTaskPage() {
   const [pageError, setPageError] = useState<string>('');
@@ -18,7 +18,7 @@ export default function CreateTaskPage() {
   const verifyOwner = async () => {
     setIsLoading(true);
     try {
-      await validateProjectOwner({ projectId });
+      await verifyProjectOwner({ projectId });
     } catch (err) {
       console.error('Failed to load task creator:', err)
       setPageError('Invalid request. Check console');

@@ -6,7 +6,7 @@ interface validatorProp {
   getResponse?: boolean;
 }
 
-const validateProjectOwner = async ({ projectId, getResponse }: validatorProp) => {
+const verifyProjectOwner = async ({ projectId, getResponse }: validatorProp) => {
   try {
     const userToken = useAuthStore.getState().accessToken;
     if (!userToken) throw new Error("Unauthorized access");
@@ -26,4 +26,4 @@ const validateProjectOwner = async ({ projectId, getResponse }: validatorProp) =
     throw new Error('Failed to validate project\'s owner.');
   }
 };
-export default validateProjectOwner;
+export default verifyProjectOwner;

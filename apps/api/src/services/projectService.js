@@ -96,7 +96,6 @@ const deleteProject = async ({ projectId, ownerId }) => {
 }
 
 module.exports = {
-  getPublicProjects,
   getProjects,
   getProjectById,
   createProject,

@@ -63,7 +63,7 @@ export default function ProjectBoard() {
           {projects.map((project) => (
             <NavButton to={`/projects/${project._id}`}
               key={project._id} 
-              className='individual-navigation'
+              className='content-navigation'
               style={{ 
                 display: 'block'
               }}

@@ -1,9 +1,9 @@
 import { useNavigate, useParams } from "react-router-dom";
 import EditTaskForm from "../../features/Task/EditTaskForm";
-import validateProjectOwner from "../../services/validateProjectOwner";
+import verifyProjectOwner from "../../services/verifyProjectOwner";
 import { useEffect, useState } from "react";
 import type { TaskData } from "../../services/modelInterfaces";
-import validateTaskAddress from "../../services/validateTaskAddress";
+import verifyTaskAddress from "../../services/verifyTaskAddress";
 
 export default function EditTaskPage() {
   const [pageError, setPageError] = useState<string>('');
@@ -28,7 +28,7 @@ export default function EditTaskPage() {
 
   const verifyOwner = async () => {
     try {
-      await validateProjectOwner({ projectId });
+      await verifyProjectOwner({ projectId });
     } catch (err) {
       console.error('Failed to load task creator:', err)
       setPageError('Invalid request. Check console');
@@ -37,7 +37,7 @@ export default function EditTaskPage() {
 
   const fetchTask = async () => {
     try {
-      const response = await validateTaskAddress({ taskId, projectId, getResponse: true })
+      const response = await verifyTaskAddress({ taskId, projectId, getResponse: true })
       const { title, description, assignedName, priority, status } = response?.data.data || response?.data;
       setTaskData({
         title,

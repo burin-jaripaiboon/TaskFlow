@@ -3,15 +3,22 @@ import { Link, useParams } from "react-router-dom";
 import type { Project } from "../../services/modelInterfaces";
 import { useAuthStore } from "../../stores/useAuthStore";
 import api from "../../services/api";
-import NavButton from "../../components/utilities/NavButton";
+import ProjectTaskList from "../../features/Project/ProjectTaskList";
 
 export default function ProjectPage() {
   const [project, setProject] = useState<Project>();
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [pageError, setPageError] = useState<string>('');
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
   const { id } = useParams();
+  if (!id) {
+    return (
+      <div>
+        <p className='error-text'>No project ID given!</p>
+      </div>
+    );
+  }
   useEffect(() => {
     const userToken = useAuthStore.getState().accessToken;
     if (userToken) {
@@ -24,16 +31,16 @@ export default function ProjectPage() {
     }
   }, []);
   const fetchProject = async () => {
-    setLoading(true);
+    setIsLoading(true);
     try {
       const response = await api.get(`/projects/${id}`);
       setProject(response.data.data || response.data);
 
     } catch (err: any) {
       console.error("Error loading project", err);
-      setError('Failed to load project. Check your console.');
+      setPageError('Failed to load project. Check your console.');
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   }
 
@@ -41,12 +48,12 @@ export default function ProjectPage() {
     fetchProject();
   } , [id])
 
-  if (loading) {
+  if (isLoading) {
     return <div>Loading project...</div>;
   }
 
-  if (error) {
-    return <div style={{ color: 'red' }}>{error}</div>;
+  if (pageError) {
+    return <div style={{ color: 'red' }}>{pageError}</div>;
   }
 
   return (
@@ -65,7 +72,7 @@ export default function ProjectPage() {
               <p style={{ margin: '5px 0', fontSize: '14px', color: '#666' }}>
                 {project.description}
               </p>
-              { project.ownerId === currentUserId && (<NavButton to={`/projects/${id}/tasks/create`}>+ New Task</NavButton>) }
+              <ProjectTaskList projectId={id} isProjectOwner={ project.ownerId === currentUserId } />
           </div>
         </div>
       ) : (
