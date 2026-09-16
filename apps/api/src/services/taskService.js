@@ -25,6 +25,30 @@ const getTasks = async (filter, page = 1, limit = 20) => {
   };
 }
 
+const getTaskById = async ({ taskId, userId }) => {
+
+  const task = await Project.findById(taskId)
+                            .populate('projectId');
+
+  if (!task) {
+    throw new AppError('Task not found', 404);
+  }
+
+  if (task.projectId.isPublicAccess) {
+    return task;
+  }
+
+  const isProjectOwner = task.projectId.ownerId.toString() === userId.toString();
+  const isContributor = task.assignedTo.toString() === userId.toString();
+
+  if (!isProjectOwner && !isContributor) {
+    throw new AppError('You do not have permission to edit this task', 403);
+  }
+  
+  return project;
+};
+
+
 const createTask = async ({ title, description, status, priority, projectId, assignedName }) => {
   if (!title || !projectId) {
     return response.status(400).json({ success: false, message: "Please provide a title and projectId." });
@@ -98,6 +122,7 @@ const deleteTask = async ({ taskId, ownerId }) => {
 
 module.exports = {
   getTasks,
+  getTaskById,
   createTask,
   updateTask,
   deleteTask

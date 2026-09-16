@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { getTasks, createTask, updateTask, deleteTask } = require('../controllers/taskController');
+const { getTasks, getTaskById, createTask, updateTask, deleteTask } = require('../controllers/taskController');
 const { protect } = require('../middleware/authMiddleware');
 const { validateObjectId } = require('../middleware/validateObjectId');
 
@@ -10,6 +10,7 @@ router.route('/')
   .post(protect, createTask);
 
 router.route('/:id')
+  .get(validateObjectId, protect, getTaskById)
   .patch(validateObjectId, protect, updateTask)
   .delete(validateObjectId, protect, deleteTask);
 

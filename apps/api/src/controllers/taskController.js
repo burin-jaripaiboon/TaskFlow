@@ -10,6 +10,15 @@ exports.getTasks = async (request, response) => {
   response.status(200).json({ success: true, ...tasksPage });
 };
 
+// GET /api/tasks/:id
+exports.getTasks = async (request, response) => {
+  const taskId = request.params.id;
+  const userId = request.user;
+  const task = await taskService.getTaskById({ taskId, userId });
+  
+  response.status(200).json({ success: true, data: task });
+};
+
 // POST /api/tasks
 exports.createTask = async (request, response) => {
     const { title, description, priority, projectId, status, assignedName } = request.body;
