@@ -27,7 +27,7 @@ const getTasks = async (filter, page = 1, limit = 20) => {
 
 const getTaskById = async ({ taskId, userId }) => {
 
-  const task = await Project.findById(taskId)
+  const task = await Task.findById(taskId)
                             .populate('projectId');
 
   if (!task) {
