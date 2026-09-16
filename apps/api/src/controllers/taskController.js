@@ -11,7 +11,7 @@ exports.getTasks = async (request, response) => {
 };
 
 // GET /api/tasks/:id
-exports.getTasks = async (request, response) => {
+exports.getTaskById = async (request, response) => {
   const taskId = request.params.id;
   const userId = request.user;
   const task = await taskService.getTaskById({ taskId, userId });
