@@ -34,18 +34,14 @@ const getTaskById = async ({ taskId, userId }) => {
     throw new AppError('Task not found', 404);
   }
 
-  if (task.projectId.isPublicAccess) {
-    return task;
-  }
-
   const isProjectOwner = task.projectId.ownerId.toString() === userId.toString();
-  const isContributor = task.assignedTo.toString() === userId.toString();
+  const isContributor = task.assignedTo? (task.assignedTo.toString() === userId.toString()): false;
 
   if (!isProjectOwner && !isContributor) {
     throw new AppError('You do not have permission to edit this task', 403);
   }
   
-  return project;
+  return await task.depopulate('projectId');
 };
 
 
@@ -88,11 +84,11 @@ const updateTask = async ({ taskId, userId, title, description, status, priority
   }
 
   if (isProjectOwner) {
-    if (title) task.title = updateData.title;
-    if (description !== undefined) task.description = updateData.description;
-    if (status) task.status = updateData.status;
-    if (priority !== undefined) task.priority = updateData.priority;
-    if (assignedTo !== undefined) task.assignedTo = updateData.assignedTo;
+    if (title) task.title = title;
+    if (description !== undefined) task.description = description;
+    if (status) task.status = status;
+    if (priority !== undefined) task.priority = priority;
+    if (assignedTo !== undefined) task.assignedTo = assignedTo;
 
   } else if (isAssignee) {
     if (status) {
