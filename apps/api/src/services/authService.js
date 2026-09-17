@@ -4,6 +4,7 @@ const User = require('../models/User');
 const AppError = require('../utilities/AppError');
 
 const MAX_SESSIONS = 5;
+const INVALID_REFRESH_TOKEN_ERROR_CODE = 'INVALID_REFRESH_TOKEN';
 const DEVICE_TOKEN_EXPIRED_ERROR_CODE = 'REFRESH_TOKEN_EXPIRED';
 const NO_DEVICE_TOKEN_ERROR_CODE = 'NO_REFRESH_TOKEN';
 
@@ -123,7 +124,9 @@ const refreshTokens = async (oldRefreshToken) => {
       sessionExpiredError.errorCode = DEVICE_TOKEN_EXPIRED_ERROR_CODE;
       throw sessionExpiredError;
     }
-    throw new AppError(`Invalid session signature: ${error.message}`, 401);
+    const invalidTokenError = new AppError(`Invalid session signature: ${error.message}`, 401);
+    invalidTokenError.errorCode = INVALID_REFRESH_TOKEN_ERROR_CODE;
+    throw invalidTokenError;
   }
   const { userId, sessionId } = payload;
   const user = await User.findById(userId);

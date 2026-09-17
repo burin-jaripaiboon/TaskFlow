@@ -4,7 +4,7 @@ module.exports = (err, req, res, next) => {
   if (err.statusCode === 500) {
     console.error('💥 FATAL ERROR:', err);
   }
-  if (err.errorCode === 'REFRESH_TOKEN_EXPIRED') {
+  if (err.errorCode === 'REFRESH_TOKEN_EXPIRED' || err.errorCode === 'INVALID_REFRESH_TOKEN') {
     res.clearCookie('refreshToken', {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
