@@ -35,7 +35,7 @@ export default function App() {
       const response = await api.post('/auth/refresh');
       setAccessToken(response.data.accessToken);
     } catch (error) {
-      console.error('Invalid refresh token!')
+      console.error('Invalid refresh token!:', error);
     } finally {
       setIsInitializing(false);
     }
