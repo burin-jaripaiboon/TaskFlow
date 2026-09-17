@@ -19,7 +19,7 @@ const verifyTaskAddress = async ({ taskId, projectId, getResponse }: validatorPr
       return response;
     }
   } catch (err: any) {
-    console.error(err);
+    console.error('Verify Task Error:', err);
     throw new Error('Failed to validate task\'s address.');
   }
 };

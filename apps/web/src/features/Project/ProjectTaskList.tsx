@@ -54,7 +54,6 @@ export default function ProjectTaskList({ projectId, isProjectOwner }: TaskListP
       ) : (
         <>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '15px' }}>
-            {/* We map directly over 'tasks' now, trusting the backend's sort order */}
             {tasks.map((task) => (
               <div 
                 key={task._id}
@@ -62,16 +61,28 @@ export default function ProjectTaskList({ projectId, isProjectOwner }: TaskListP
                 style={{
                   display: 'flex',
                   justifyContent: 'space-between',
-                  opacity: isLoading ? 0.5 : 1, // Visual feedback while changing pages
-                  transition: 'opacity 0.2s ease'
+                  opacity: isLoading ? 0.5 : 1,
+                  transition: 'opacity 0.2s ease',
+                  columnGap: '20px'
                 }}
               >
                 {/* Left Side: Text Content */}
                 <div>
                   <strong style={{ fontSize: '16px', display: 'block', marginBottom: '5px' }}>
-                    {task.title}
+                    <span style={{ wordBreak: 'break-word', overflowWrap: 'break-word', flex: '1 1 auto' }}>
+                      {task.title}
+                    </span>
+                    {isProjectOwner && (
+                      <Link 
+                        style={{ marginLeft: '15px', whiteSpace: 'nowrap', flexShrink: 0 }} 
+                        className='link-color' 
+                        to={`/projects/${projectId}/tasks/${task._id}/edit`}
+                      >
+                        Edit
+                      </Link>
+                    )}
                   </strong>
-                  <span style={{ fontSize: '14px', color: '#666' }}>
+                  <span style={{ fontSize: '14px', color: '#666', display: 'block' }}>
                     {task.description || 'No description provided.'}
                   </span>
                 </div>
