@@ -28,7 +28,7 @@ const getTasks = async (filter, page = 1, limit = 20) => {
 const getTaskById = async ({ taskId, userId }) => {
 
   const task = await Task.findById(taskId)
-                            .populate('projectId');
+    .populate('projectId');
 
   if (!task) {
     throw new AppError('Task not found', 404);
