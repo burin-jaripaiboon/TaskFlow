@@ -6,7 +6,7 @@ exports.register = async (request, response) => {
   response.cookie('refreshToken', refreshToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
+    sameSite: 'none',
     expires: expiresAt
   });
   response.status(201).json({ success: true, accessToken });
@@ -18,7 +18,7 @@ exports.login = async (request, response) => {
   response.cookie('refreshToken', refreshToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
+    sameSite: 'none',
     expires: expiresAt
   });
   response.status(201).json({ success: true, accessToken });
@@ -30,19 +30,18 @@ exports.logout = async (request, response) => {
   response.clearCookie('refreshToken', {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
+    sameSite: 'none',
   });
   response.status(201).json({ success: true });
 };
 
 exports.refreshTokens = async (request, response) => {
   const oldRefreshToken = request.cookies.refreshToken;
-  console.log(oldRefreshToken)
   const { refreshToken, accessToken, expiresAt } = await authService.refreshTokens(oldRefreshToken);
   response.cookie('refreshToken', refreshToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
+    sameSite: 'none',
     expires: expiresAt
   });
   response.status(201).json({ success: true, accessToken });

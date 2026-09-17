@@ -37,7 +37,6 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
     const errorCode = error.response?.data?.errorCode;
-    console.log(errorCode);
     if (errorCode === 'NO_REFRESH_TOKEN') {
       forceLogoutUser();
       window.location.href = '/login?reason=unauthorized'; 
